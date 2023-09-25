@@ -1,0 +1,101 @@
+import FunnelIcon from "@/Icons/FunnelIcon";
+import { TagElement } from "@/types/board";
+import { Popover, Transition } from "@headlessui/react";
+import { Fragment, useContext } from "react";
+import AddTagForm from "../Forms/AddTagForm";
+import { FilterContext } from "@/context/FilterContext";
+import Container from "@/Components/Container";
+import TrashIcon from "@/Icons/TrashIcon";
+import { Link } from "@inertiajs/react";
+
+export default function TagsPopover({
+  id,
+  tags,
+}: {
+  id: number;
+  tags: TagElement[];
+}) {
+  const { getFilter, clearFilter } = useContext(FilterContext);
+
+  return (
+    <Popover className="relative">
+      <Popover.Button className="text-xs uppercase tracking-wider rounded-md h-7 px-1 w-auto select-none border shadow-slanted-xs transition duration-150 -translate-x-[0.15rem] -translate-y-[0.15rem] hover:translate-y-0 hover:translate-x-0 hover:shadow-none border-black focus:ring-0 active:ring-0 ">
+        tags
+      </Popover.Button>
+      <Transition
+        as={Fragment}
+        enter="transition ease-out duration-200"
+        enterFrom="opacity-0 -translate-y-1"
+        enterTo="opacity-100 translate-y-0"
+        leave="transition ease-in duration-150"
+        leaveFrom="opacity-100 translate-y-0"
+        leaveTo="opacity-0 -translate-y-1"
+      >
+        <Popover.Panel className="absolute top-8 right-1">
+          <Container className="p-3 w-48 ">
+            <div className="mt-2 h-16 w-full">
+              <Popover className="relative">
+                <Popover.Button className="w-full py-1 uppercase text-xs border border-dashed border-black rounded-md">
+                  + new tag
+                </Popover.Button>
+                <Transition
+                  as={Fragment}
+                  enter="transition ease-out duration-200"
+                  enterFrom="opacity-0 -translate-y-1"
+                  enterTo="opacity-100 translate-y-0"
+                  leave="transition ease-in duration-150"
+                  leaveFrom="opacity-100 translate-y-0"
+                  leaveTo="opacity-0 -translate-y-1"
+                >
+                  <Popover.Panel className="absolute -left-8">
+                    {({ close }) => <AddTagForm boardId={id} closeForm={close} />}
+                  </Popover.Panel>
+                </Transition>
+              </Popover>
+              <button
+                type="button"
+                className="w-full py-1 uppercase text-xs border border-dashed border-black rounded-md"
+                onClick={() => clearFilter()}
+              >
+                clear filter
+              </button>
+            </div>
+            <div className="mt-1 mb-3 flex items-center gap-x-1">
+              <FunnelIcon className="w-4 h-4" />
+              <h3 className="text-sm">Filter tasks by tag</h3>
+            </div>
+            <div className="max-h-80 oveflow-y-scroll w-full flex flex-col gap-y-1">
+              {tags.map((tag) => (
+                <div
+                  key={tag.id}
+                  className="flex justify-evenly gap-x-2 items-center"
+                >
+                  <button
+                    type="button"
+                    className=""
+                    onClick={() => getFilter(tag.name)}
+                  >
+                    <FunnelIcon className="h-4 w-4" />
+                  </button>
+                  <span
+                    className={`inline-flex justify-center items-center w-full py-1 ${tag.color} rounded-md border border-black text-xs tracking-wide font-medium capitalize`}
+                    onClick={() => getFilter(tag.name)}
+                  >
+                    {tag.name}
+                  </span>
+                  <Link
+                    as="button"
+                    method="delete"
+                    href={route("tags.delete", { tag: tag.id })}
+                  >
+                    <TrashIcon className="h-4 w-4" />
+                  </Link>
+                </div>
+              ))}
+            </div>
+          </Container>
+        </Popover.Panel>
+      </Transition>
+    </Popover>
+  );
+}
