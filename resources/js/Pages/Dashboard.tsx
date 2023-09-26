@@ -15,7 +15,7 @@ export default function Dashboard({ boards }: { boards: BoardElement[] }) {
 
   return (
     <>
-      <Head title="Boards" />
+      <Head title="Dashboard" />
 
       <div className="h-full w-full flex flex-col items-center mt-2 px-3 space-y-5 pb-6">
         <DashboardMenu onSearchChange={onSearchChange} currentBoards={boards.length} />
