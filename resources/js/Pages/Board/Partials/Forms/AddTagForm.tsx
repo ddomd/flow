@@ -40,7 +40,7 @@ export default function AddTagForm({
         id="tag-name"
         name="tag-name"
         value={data.name}
-        onChange={(e) => setData("name", e.target.value)}
+        onChange={(e) => setData("name", e.target.value.toLowerCase())}
         className="w-full"
         autoFocus
       />
@@ -53,7 +53,7 @@ export default function AddTagForm({
         }}
       />
       <div className="flex justify-center gap-x-3 ">
-        <SecondaryButton type="button" onClick={() => closeForm()} className="">
+        <SecondaryButton type="button" onClick={() => closeForm()}>
           close
         </SecondaryButton>
         <PrimaryButton type="submit">Add tag</PrimaryButton>

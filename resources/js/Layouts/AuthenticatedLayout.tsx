@@ -5,6 +5,7 @@ import { NotifyContext } from "@/context/NotifyContext";
 import BurgerIcon from "@/Icons/BurgerIcon";
 import NavLogo from "@/Icons/NavLogo";
 import Notification from "@/Components/Notification";
+import LeftArrowIcon from "@/Icons/LeftArrowIcon";
 
 export default function Authenticated({ children }: PropsWithChildren) {
   const [show, setShow] = useState(false);
@@ -17,7 +18,7 @@ export default function Authenticated({ children }: PropsWithChildren) {
     //reset animation on page close
   }, []);
 
-  const showSidebar = () => {
+  const toggleSidebar = () => {
     setSidebar(!sidebar);
   };
 
@@ -49,7 +50,7 @@ export default function Authenticated({ children }: PropsWithChildren) {
               enterTo="opacity-100"
               className="hidden sm:block"
             >
-              <ul className="flex space-x-6 text-sm uppercase tracking-wide">
+              <ul className="flex space-x-4 text-base tracking-wide">
                 <li>
                   <Link
                     href={route("boards")}
@@ -58,20 +59,25 @@ export default function Authenticated({ children }: PropsWithChildren) {
                     Boards
                   </Link>
                 </li>
-                <Link
-                  href={route("profile.edit")}
-                  className="hover:text-pastel-coral "
-                >
-                  Profile
-                </Link>
-                <Link
-                  href={route("logout")}
-                  method="post"
-                  as="button"
-                  className="hover:text-pastel-coral uppercase tracking-wide"
-                >
-                  Logout
-                </Link>
+                <li>
+                  <Link
+                    href={route("profile.edit")}
+                    className="hover:text-pastel-coral "
+                  >
+                    Profile
+                  </Link>
+                </li>
+
+                <li>
+                  <Link
+                    href={route("logout")}
+                    method="post"
+                    as="button"
+                    className="hover:text-pastel-coral"
+                  >
+                    Logout
+                  </Link>
+                </li>
               </ul>
             </Transition.Child>
 
@@ -81,54 +87,68 @@ export default function Authenticated({ children }: PropsWithChildren) {
               enterFrom="opacity-0 translate-x-1/3"
               enterTo="opacity-100"
               className="block sm:hidden"
-              onClick={showSidebar}
+              onClick={toggleSidebar}
             >
               <BurgerIcon className="h-8 w-8" />
             </Transition.Child>
 
             {sidebar && (
               <>
-                <div
-                  className="absolute top-0 left-0 h-screen w-screen bg-black/40"
-                  onClick={showSidebar}
-                ></div>
                 <Transition.Child
                   as="aside"
                   enter="transform transition duration-100 ease-in"
                   enterFrom="opacity-0 translate-x-2/3"
                   enterTo="opacity-100"
-                  className="relative z-50 h-screen border-t border-l border-b border-neon-pink bg-black w-2/3 right-0 top-0"
+                  className="fixed z-50 h-screen flex flex-col space-y-4 bg-orange-100 w-1/2 right-0 top-0"
                 >
-                  <nav className="h-full flex flex-col justify-center items-center">
-                    <ul className="h-full flex flex-col items-center justify-center space-y-6 px-8 text-white">
+                  <button
+                    type="button"
+                    onClick={toggleSidebar}
+                    className="h-10 w-16 px-2 top-0 -left-10 absolute bg-orange-100 rounded-md"
+                  >
+                    <LeftArrowIcon className="rotate-180 h-7 w-7" />
+                  </button>
+
+                  <NavLogo className="self-center h-32 w-32" />
+                  <nav className="">
+                    <ul className="h-full flex flex-col space-y-3 ml-8 tracking-wide">
                       <li>
                         <Link
-                          onClick={showSidebar}
+                          onClick={toggleSidebar}
                           href={route("boards")}
                           className="hover:text-pastel-coral"
                         >
                           Boards
                         </Link>
                       </li>
-                      <Link
-                        onClick={showSidebar}
-                        href={route("profile.edit")}
-                        className="hover:text-pastel-coral"
-                      >
-                        Profile
-                      </Link>
-                      <Link
-                        onClick={showSidebar}
-                        href={route("logout")}
-                        method="post"
-                        as="button"
-                        className="hover:text-pastel-coral"
-                      >
-                        Logout
-                      </Link>
+                      <li>
+                        <Link
+                          onClick={toggleSidebar}
+                          href={route("profile.edit")}
+                          className="hover:text-pastel-coral"
+                        >
+                          Profile
+                        </Link>
+                      </li>
+
+                      <li>
+                        <Link
+                          onClick={toggleSidebar}
+                          href={route("logout")}
+                          method="post"
+                          as="button"
+                          className="hover:text-pastel-coral"
+                        >
+                          Logout
+                        </Link>
+                      </li>
                     </ul>
                   </nav>
                 </Transition.Child>
+                <div
+                  className="z-30 fixed top-0 left-0 h-screen w-screen bg-white/40"
+                  onClick={toggleSidebar}
+                ></div>
               </>
             )}
           </Transition>

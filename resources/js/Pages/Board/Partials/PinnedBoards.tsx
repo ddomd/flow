@@ -1,5 +1,5 @@
 import { BoardElement } from "@/types/board";
-import PinnedCard from "./PinnedCard";
+import PinnedCard from "./BoardCard/PinnedCard";
 import Container from "@/Components/Container";
 
 export default function PinnedBoards({ boards }: { boards: BoardElement[] }) {
