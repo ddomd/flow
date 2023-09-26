@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('board_id')->constrained()->onDelete('cascade');
-            $table->foreignUuid('column_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->onDelete('cascade');
+            $table->foreignId('board_id')->onDelete('cascade');
+            $table->foreignUuid('column_id')->onDelete('cascade');
             $table->string('title');
             $table->longText('description')->nullable();
             $table->double('position');
