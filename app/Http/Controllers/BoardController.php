@@ -10,11 +10,21 @@ class BoardController extends Controller
 {
     public function index()
     {
+        $cacheKey = 'user_'.auth()->id().'_boards';
+
+        if (cache()->has($cacheKey)) {
+            return cache($cacheKey);
+        }
+    
         $boards = auth()->user()->boards;
 
-        return Inertia::render('Dashboard', [
+        $response = Inertia::render('Dashboard', [
             'boards' => $boards,
-        ]);
+        ])->withTtl(60);
+
+        cache()->put($cacheKey, $response);
+
+        return $response;
     }
 
     public function show(Board $board)
