@@ -10,21 +10,21 @@ class BoardController extends Controller
 {
     public function index()
     {
-        $cacheKey = 'user_'.auth()->id().'_boards';
+        $boards = cache('dashboard_boards');
 
-        if (cache()->has($cacheKey)) {
-            return cache($cacheKey);
+        if (!$boards) {
+            // If not found in cache, query the database to fetch the boards
+            $boards = auth()->user()->boards;
+
+            // Cache the boards data with a specific key for a defined TTL (e.g., 60 minutes)
+            cache(['dashboard_boards' => $boards], 60);
         }
-    
+
         $boards = auth()->user()->boards;
 
-        $response = Inertia::render('Dashboard', [
+        return Inertia::render('Dashboard', [
             'boards' => $boards,
-        ])->withTtl(60);
-
-        cache()->put($cacheKey, $response);
-
-        return $response;
+        ]);
     }
 
     public function show(Board $board)
