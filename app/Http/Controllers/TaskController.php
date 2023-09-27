@@ -88,8 +88,6 @@ class TaskController extends Controller
         $task->column_id = $column->id;
 
         $task->save();
-
-        return back();
     }
 
     public function delete(Task $task)

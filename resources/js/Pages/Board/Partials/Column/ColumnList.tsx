@@ -133,8 +133,6 @@ export default function ColumnList({ columns, tags }: { columns: ColumnElement[]
     // If there's no 'over' target, return (no action needed)
     if (!over) return;
 
-    if (active.id === over.id) return;
-
     // Get the currently dragged task from the 'active' data
     const dragging: TaskElement = active.data.current?.task;
 
