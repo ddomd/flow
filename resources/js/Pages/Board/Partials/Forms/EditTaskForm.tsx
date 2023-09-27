@@ -32,6 +32,10 @@ export default function EditTaskForm({
   const { modal, showModal, closeModal } = useModal();
 
   const submitTextFields: FormEventHandler = (e: FormEvent) => {
+    if(!data.description) {
+      setData('description', "");
+    }
+
     if (data.title === task.title && data.description === task.description) {
       return;
     }
