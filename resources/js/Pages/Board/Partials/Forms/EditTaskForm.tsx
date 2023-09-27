@@ -26,7 +26,7 @@ export default function EditTaskForm({
 }) {
   const { data, setData, errors, put, reset } = useForm({
     title: task.title,
-    description: task.description ? task.description : "",
+    description: task.description,
   });
 
   const { modal, showModal, closeModal } = useModal();

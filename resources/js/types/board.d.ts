@@ -21,7 +21,7 @@ export interface TaskElement {
   column_id: string;
   title: string;
   position: number;
-  description: string | null;
+  description: string;
   subtasks: SubtaskElement[];
   tags: TagElement[];
   updated_at: string;

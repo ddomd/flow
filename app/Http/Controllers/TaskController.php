@@ -18,7 +18,7 @@ class TaskController extends Controller
 
         request()->validate([
             'title' => ['required', 'string', 'max:64'],
-            'description' => ['string', 'nullable', 'max:255'],
+            'description' => ['string', 'max:255'],
             'subtasks' => ['array', 'max:5'],
             'tags' => ['array', 'max:10'],
             'items' => ['required', new MaxEntries($boardTasks, 40)],
@@ -63,7 +63,7 @@ class TaskController extends Controller
 
         request()->validate([
             'title' => ['required', 'string'],
-            'description' => ['string', 'nullable', 'max:255'],
+            'description' => ['string', 'max:255'],
         ]);
 
         $task->update([
