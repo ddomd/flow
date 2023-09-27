@@ -24,7 +24,7 @@ export default function CardMenu({ board }: { board: BoardElement }) {
       router.put(route("boards.pin", { board: board.id }), {
         pinned: pinned,
       });
-    }, 500);
+    }, 100);
   };
 
   return (
@@ -32,7 +32,7 @@ export default function CardMenu({ board }: { board: BoardElement }) {
       <button
         onClick={handlePinToggle}
         className={`-translate-x-[0.10rem] -translate-y-[0.10rem] p-1 border border-black rounded-full shadow-slanted-xs ${
-          board.pinned ? "bg-amber-400" : ""
+          pinned ? "bg-amber-400" : ""
         }`}
       >
         <PinIcon className="h-4 w-4" />
