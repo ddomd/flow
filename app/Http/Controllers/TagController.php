@@ -37,9 +37,9 @@ class TagController extends Controller
         $this->authorize('edit', $task);
         $this->authorize('edit', $tag);
 
-        $tag->tasks()->attach($task->id);
-
-        return back();
+        if (!$task->tags->contains($tag->id)) {
+            $tag->tasks()->attach($task->id);
+        }
     }
 
     public function detach(Task $task, Tag $tag)
