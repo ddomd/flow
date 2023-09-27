@@ -5,9 +5,11 @@ import { useModal } from "@/hooks/useModal";
 import { BoardElement } from "@/types/board";
 import { router } from "@inertiajs/react";
 import DeleteBoardForm from "../Forms/DeleteBoardForm";
+import { useState } from "react";
 
 export default function CardMenu({ board }: { board: BoardElement }) {
   const { modal, showModal, closeModal } = useModal();
+  const [pinned, setPinned] = useState(board.pinned);
 
   let debounceTimer: NodeJS.Timeout | null = null;
 
@@ -16,11 +18,11 @@ export default function CardMenu({ board }: { board: BoardElement }) {
       clearTimeout(debounceTimer);
     }
 
-    board.pinned = !board.pinned;
+    setPinned(!pinned);
 
     debounceTimer = setTimeout(() => {
       router.put(route("boards.pin", { board: board.id }), {
-        pinned: board.pinned,
+        pinned: pinned,
       });
     }, 500);
   };
@@ -28,7 +30,7 @@ export default function CardMenu({ board }: { board: BoardElement }) {
   return (
     <menu className="absolute top-3 right-3 flex space-x-2">
       <button
-        onClick={() => (board.pinned = !board.pinned)}
+        onClick={handlePinToggle}
         className={`-translate-x-[0.10rem] -translate-y-[0.10rem] p-1 border border-black rounded-full shadow-slanted-xs ${
           board.pinned ? "bg-amber-400" : ""
         }`}
