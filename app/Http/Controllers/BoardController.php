@@ -31,7 +31,7 @@ class BoardController extends Controller
     {
         $this->authorize('show', $board);
 
-        $cachedBoard = cache()->remember('board_' . $board->id, 60, function () use ($board) {
+        $cachedBoard = cache()->tags('board')->remember('board_' . $board->id, 60, function () use ($board) {
             // Load the board's relationships within the closure
             $board->load([
                 'tags',
