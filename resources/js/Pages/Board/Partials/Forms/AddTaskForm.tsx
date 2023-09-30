@@ -1,12 +1,3 @@
-import InputError from "@/Components/InputError";
-import InputLabel from "@/Components/InputLabel";
-import PrimaryButton from "@/Components/PrimaryButton";
-import SecondaryButton from "@/Components/SecondaryButton";
-import TextInput from "@/Components/TextInput";
-import TextIcon from "@/Icons/TextIcon";
-import TitleIcon from "@/Icons/TitleIcon";
-import { NotifyContext } from "@/context/NotifyContext";
-import { useForm } from "@inertiajs/react";
 import {
   FormEvent,
   FormEventHandler,
@@ -14,8 +5,18 @@ import {
   useContext,
   useState,
 } from "react";
-import AddSubtaskPopover from "../Task/AddSubtaskPopover";
+import { useForm } from "@inertiajs/react";
+import { NotifyContext } from "@/context/NotifyContext";
+import { debounce } from "@/utils/debounce";
 import { TagElement } from "@/types/board";
+import InputError from "@/Components/InputError";
+import InputLabel from "@/Components/InputLabel";
+import PrimaryButton from "@/Components/PrimaryButton";
+import SecondaryButton from "@/Components/SecondaryButton";
+import TextInput from "@/Components/TextInput";
+import TextIcon from "@/Icons/TextIcon";
+import TitleIcon from "@/Icons/TitleIcon";
+import AddSubtaskPopover from "../Task/AddSubtaskPopover";
 import TaskTagsPopover from "../Task/TaskTagsPopover";
 
 export default function AddTaskForm({
@@ -33,7 +34,7 @@ export default function AddTaskForm({
 
   const subtasks: string[] = [];
 
-  const { data, setData, errors, post, reset } = useForm({
+  const { data, setData, errors, post, reset, processing } = useForm({
     title: "",
     description: "",
     subtasks: subtasks,
@@ -60,14 +61,17 @@ export default function AddTaskForm({
   };
 
   const attachTag = (tag: TagElement) => {
-    if(tags.includes(tag)) {
+    if (tags.includes(tag)) {
       return;
     }
 
     const newTags = [...tags, tag];
     console.log(data.tags);
     setTags(newTags);
-    setData('tags', newTags.map(tag => tag.id));
+    setData(
+      "tags",
+      newTags.map((tag) => tag.id)
+    );
   };
 
   const detachTag = (e: MouseEvent<HTMLButtonElement>) => {
@@ -76,32 +80,33 @@ export default function AddTaskForm({
     const newTags = [...tags.slice(0, index), ...tags.slice(index + 1)];
 
     setTags(newTags);
-    setData('tags', newTags.map(tag => tag.id));
+
+    setData(
+      "tags",
+      newTags.map((tag) => tag.id)
+    );
   };
+
+  const debouncedSubmit = debounce(() => {
+    post(route("tasks.store", { board: boardId, column: columnId }), {
+      onSuccess: () => {
+        reset();
+        sendNotify("Task created successfully", "success");
+        closeForm();
+      },
+      onError: () => {
+        if (errors.items) {
+          reset();
+          sendNotify("You can only create 40 cards", "fail");
+          closeForm();
+        }
+      },
+    });
+  }, 200);
 
   const submitHandler: FormEventHandler = (e: FormEvent) => {
     e.preventDefault();
-
-    try {
-      post(route("tasks.store", { board: boardId, column: columnId }), {
-        onSuccess: () => {
-          reset();
-          sendNotify("Task created successfully", "success");
-          closeForm();
-        },
-        onError: () => {
-          if (errors.items) {
-            reset();
-            sendNotify("You can only create 40 cards", "fail");
-            closeForm();
-          }
-        },
-      });
-    } catch (e) {
-      reset();
-      sendNotify("Failed to create task", "fail");
-      closeForm();
-    }
+    debouncedSubmit();
   };
 
   return (
@@ -184,8 +189,12 @@ export default function AddTaskForm({
       </div>
 
       <div className="flex justify-end space-x-2 mt-4">
-        <SecondaryButton onClick={closeForm}>Cancel</SecondaryButton>
-        <PrimaryButton type="submit">Create Task</PrimaryButton>
+        <SecondaryButton type="button" onClick={closeForm}>
+          Cancel
+        </SecondaryButton>
+        <PrimaryButton type="submit" disabled={processing}>
+          Create Task
+        </PrimaryButton>
       </div>
     </form>
   );

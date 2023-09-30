@@ -5,7 +5,7 @@ import CardMenu from "./CardMenu";
 import { NotifyContext } from "@/context/NotifyContext";
 
 export default function BoardCard({ board }: { board: BoardElement }) {
-  const { put, data, setData, reset, errors } = useForm({
+  const { put, data, setData, reset, errors, processing } = useForm({
     name: board.name,
   });
 
@@ -20,22 +20,17 @@ export default function BoardCard({ board }: { board: BoardElement }) {
       return;
     }
 
-    try {
-      put(route("boards.edit", { board: board.id }), {
-        onSuccess: () => {
-          toggleEditMode();
-          sendNotify("Board edited successfully", "success");
-        },
-        onError: () => {
-          toggleEditMode();
-          reset();
-          sendNotify("Failed to edit board", "fail");
-        },
-      });
-    } catch (e) {
-      reset();
-      sendNotify("Failed to edit board", "fail");
-    }
+    put(route("boards.edit", { board: board.id }), {
+      onSuccess: () => {
+        toggleEditMode();
+        sendNotify("Board edited successfully", "success");
+      },
+      onError: () => {
+        toggleEditMode();
+        reset();
+        sendNotify("Failed to edit board", "fail");
+      },
+    });
   };
 
   const blurSubmit = () => sendData();
@@ -71,6 +66,7 @@ export default function BoardCard({ board }: { board: BoardElement }) {
               type="button"
               onClick={toggleEditMode}
               className="inline-flex items-center h-5 p-0 w-full sm:text-base text-sm text-left font-medium tracking-wide truncate"
+              disabled={processing}
             >
               {board.name}
             </button>

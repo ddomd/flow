@@ -1,11 +1,14 @@
-import Checkbox from "@/Components/Checkbox";
-import CheckIcon from "@/Icons/CheckIcon";
-import { SubtaskElement } from "@/types/board";
-import { Link, router, useForm } from "@inertiajs/react";
 import { useState } from "react";
+import { router, useForm } from "@inertiajs/react";
+import { debounce } from "@/utils/debounce";
+import { SubtaskElement } from "@/types/board";
+import CheckIcon from "@/Icons/CheckIcon";
+import InputError from "@/Components/InputError";
 
 export default function Subtask({ subtask }: { subtask: SubtaskElement }) {
   const [edit, setEdit] = useState(false);
+  const [disableButton, setDisableButton] = useState(false);
+
   const { data, setData, put, errors } = useForm({
     name: subtask.name,
     done: subtask.done,
@@ -15,9 +18,29 @@ export default function Subtask({ subtask }: { subtask: SubtaskElement }) {
     setEdit(!edit);
   };
 
-  const handleDelete = () => {
-    router.delete(route("subtasks.delete", { id: subtask.id }));
-  };
+  const debouncedDelete = debounce(() => {
+    router.delete(route("subtasks.delete", { id: subtask.id }), {
+      onStart: () => setDisableButton(true),
+      onFinish: () => setDisableButton(false),
+    });
+  }, 200);
+
+  const handleDelete = () => debouncedDelete();
+
+  const debouncedDone = debounce(() => {
+    router.put(
+      route("subtasks.done", { subtask: subtask.id }),
+      {
+        done: !subtask.done,
+      },
+      {
+        onStart: () => setDisableButton(true),
+        onFinish: () => setDisableButton(false),
+      }
+    );
+  }, 200);
+
+  const handleDone = () => debouncedDone();
 
   const updateSubtask = () => {
     if (data.name === subtask.name) {
@@ -25,15 +48,17 @@ export default function Subtask({ subtask }: { subtask: SubtaskElement }) {
     }
 
     put(route("subtasks.edit", { id: subtask.id }), {
+      onStart: () => setDisableButton(true),
+      onFinish: () => setDisableButton(false),
       onSuccess: toggleEditMode,
     });
   };
 
-  const handleSubmit = () => {
+  const handleBlur = () => {
     updateSubtask();
   };
 
-  const enterSubmit = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       updateSubtask();
     }
@@ -46,6 +71,7 @@ export default function Subtask({ subtask }: { subtask: SubtaskElement }) {
           type="button"
           className="text-2xl text-rose-600 font-bold"
           onClick={handleDelete}
+          disabled={disableButton}
         >
           &ndash;
         </button>
@@ -56,29 +82,29 @@ export default function Subtask({ subtask }: { subtask: SubtaskElement }) {
             value={data.name}
             className="w-full bg-transparent border-none font-medium tracking-wide m-0 p-0 focus:ring-0 focus:border-black"
             onChange={(e) => setData("name", e.target.value)}
-            onBlur={handleSubmit}
-            onKeyDown={enterSubmit}
+            onBlur={handleBlur}
+            onKeyDown={handleKeyDown}
             autoFocus
           />
         ) : (
-          <span
-            onClick={toggleEditMode}
+          <button
+            type="button"
             className="w-full text-medium tracking-wide font-medium select-none"
+            onClick={toggleEditMode}
+            disabled={disableButton}
           >
             {subtask.name}
-          </span>
+          </button>
         )}
+        <InputError message={errors.name} />
       </div>
-      <Link
-        as="button"
-        method="put"
-        href={route("subtasks.done", { subtask: subtask.id })}
-        data={{ done: !subtask.done }}
-      >
+      <button type="button" onClick={handleDone} disabled={disableButton}>
         <CheckIcon
-          className={`h-7 w-7 ${subtask.done ? "text-green-500" : "text-black"}`}
+          className={`h-7 w-7 ${
+            subtask.done ? "text-green-500" : "text-black"
+          }`}
         />
-      </Link>
+      </button>
     </div>
   );
 }

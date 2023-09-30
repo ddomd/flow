@@ -1,11 +1,12 @@
+import { FormEvent, FormEventHandler, useContext } from "react";
+import { useForm } from "@inertiajs/react";
+import { NotifyContext } from "@/context/NotifyContext";
+import { debounce } from "@/utils/debounce";
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import PrimaryButton from "@/Components/PrimaryButton";
 import SecondaryButton from "@/Components/SecondaryButton";
 import TextInput from "@/Components/TextInput";
-import { NotifyContext } from "@/context/NotifyContext";
-import { useForm } from "@inertiajs/react";
-import { FormEvent, FormEventHandler, useContext } from "react";
 
 export default function AddColumnForm({
   boardId,
@@ -25,7 +26,7 @@ export default function AddColumnForm({
     "bg-violet-400",
   ];
 
-  const { data, setData, errors, post, reset } = useForm({
+  const { data, setData, errors, post, reset, processing } = useForm({
     name: "",
     color: colors[Math.floor(Math.random() * colors.length)],
     items: columnLength,
@@ -33,32 +34,29 @@ export default function AddColumnForm({
 
   const { sendNotify } = useContext(NotifyContext);
 
+  const debouncedSubmit = debounce(() => {
+    post(route("columns.store", { board: boardId }), {
+      onSuccess: () => {
+        reset();
+        sendNotify(
+          `You can create ${3 - columnLength} more columns`,
+          "success"
+        );
+        closeForm();
+      },
+      onError: () => {
+        if (errors.items) {
+          sendNotify("You can only create 4 columns", "fail");
+          reset();
+          closeForm();
+        }
+      },
+    });
+  }, 200);
+
   const submitHandler: FormEventHandler = (e: FormEvent) => {
     e.preventDefault();
-
-    try {
-      post(route("columns.store", { board: boardId }), {
-        onSuccess: () => {
-          reset();
-          sendNotify(
-            `You can create ${3 - columnLength} more columns`,
-            "success"
-          );
-          closeForm();
-        },
-        onError: () => {
-          if (errors.items) {
-            sendNotify("You can only create 4 columns", "fail");
-            reset();
-            closeForm();
-          }
-        },
-      });
-    } catch (e) {
-      reset();
-      sendNotify("failed to create column", "fail");
-      closeForm();
-    }
+    debouncedSubmit();
   };
 
   return (
@@ -77,8 +75,12 @@ export default function AddColumnForm({
       <InputError message={errors.name} className="mt-2" />
 
       <section className="flex justify-end space-x-2 mt-4">
-        <SecondaryButton onClick={closeForm}>Cancel</SecondaryButton>
-        <PrimaryButton type="submit">Create Column</PrimaryButton>
+        <SecondaryButton type="button" onClick={closeForm}>
+          Cancel
+        </SecondaryButton>
+        <PrimaryButton type="submit" disabled={processing}>
+          Create Column
+        </PrimaryButton>
       </section>
     </form>
   );

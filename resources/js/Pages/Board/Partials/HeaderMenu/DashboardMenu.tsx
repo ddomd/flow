@@ -26,7 +26,7 @@ export default function DashboardMenu({
 
   return (
     <HeaderMenu>
-      <section className="flex items-center space-x-2">
+      <div className="flex items-center space-x-2">
         <SearchIcon className="h-5 w-5 text-black" />
         <input
           id="search"
@@ -37,8 +37,8 @@ export default function DashboardMenu({
           className="h-7 bg-transparent border-none text-black focus:ring-0"
           placeholder="Search..."
         />
-      </section>
-      <AddButton onClick={showModal} />
+      </div>
+      <AddButton onClick={showModal} className="shrink-0" />
       <Modal show={modal} closeModal={closeModal}>
         <AddBoardForm closeForm={closeModal} currentBoards={currentBoards} />
       </Modal>

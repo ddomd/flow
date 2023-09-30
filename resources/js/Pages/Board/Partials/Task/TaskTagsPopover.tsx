@@ -1,19 +1,43 @@
 import Container from "@/Components/Container";
 import SecondaryButton from "@/Components/SecondaryButton";
-import { TagElement } from "@/types/board";
+import { TagElement, TaskElement } from "@/types/board";
+import { debounce } from "@/utils/debounce";
 import { Popover, Transition } from "@headlessui/react";
-import { Link } from "@inertiajs/react";
-import { Fragment } from "react";
+import { router } from "@inertiajs/react";
+import { Fragment, useState } from "react";
+import Tag from "../Tag";
 
 export default function TaskTagsPopover({
   boardTags,
-  taskId,
+  task,
   grabTag,
 }: {
   boardTags: TagElement[];
-  taskId?: number;
+  task?: TaskElement;
   grabTag?: (tag: TagElement) => void;
 }) {
+  const [disableButton, setDisableButton] = useState(false);
+
+  const debouncedAttach = debounce((tag) => {
+    if (task) {
+      router.put(
+        route("tags.attach", { task: task.id, tag: tag.id }),
+        {},
+        {
+          onStart: () => setDisableButton(true),
+          onFinish: () => setDisableButton(false),
+        }
+      );
+    }
+  }, 200);
+
+  const handleAttachTag = task
+    ? (tag: TagElement) => {
+        if (task.tags.some((taskTag) => taskTag.id === tag.id)) return;
+        debouncedAttach(tag);
+      }
+    : grabTag;
+
   return (
     <Popover className="relative w-full">
       <Popover.Button className="w-full bg-transparent text-xs text-center uppercase tracking-wide py-1 px-2 rounded-md border border-dashed border-black">
@@ -36,28 +60,12 @@ export default function TaskTagsPopover({
                 <ul className="my-1 flex gap-x-2 h-10 overflow-x-scroll column-scroll touch-pan-x">
                   {boardTags.map((tag) => (
                     <li key={tag.id} className="shrink-0">
-                      {taskId && (
-                        <Link
-                          as="button"
-                          method="put"
-                          href={route("tags.attach", {
-                            task: taskId,
-                            tag: tag.id,
-                          })}
-                          className={`shrink-0 inline-flex items-center justify-center py-1 px-2 rounded-md ${tag.color} capitalize text-sm font-bold border border-black`}
-                        >
-                          &#65291; {tag.name}
-                        </Link>
-                      )}
-                      {grabTag && (
-                        <button
-                          type="button"
-                          className={`shrink-0 inline-flex items-center justify-center py-1 px-2 rounded-md ${tag.color} capitalize text-sm font-bold border border-black`}
-                          onClick={() => grabTag(tag)}
-                        >
-                          &#65291; {tag.name}
-                        </button>
-                      )}
+                      <Tag
+                        tag={tag}
+                        type="attach"
+                        handleTag={handleAttachTag}
+                        disabled={disableButton}
+                      />
                     </li>
                   ))}
                 </ul>

@@ -1,9 +1,9 @@
-import Modal from "@/Components/Modal";
-import { useModal } from "@/hooks/useModal";
-import { TagElement, TaskElement } from "@/types/board";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import EditTaskForm from "../Forms/EditTaskForm";
+import { useModal } from "@/hooks/useModal";
+import { TagElement, TaskElement } from "@/types/board";
+import Modal from "@/Components/Modal";
+import TaskModal from "./TaskModal";
 
 export default function Task({
   active = false,
@@ -64,10 +64,10 @@ export default function Task({
         className={`${
           active ? "shadow-slanted-sm" : ""
         } bg-orange-100 shrink-0 p-3 w-full h-36 border-2 ${
-          disabled ? "border-rose-400" : "border-black"
-        } rounded-md touch-manipulation ${
-          disabled ? "cursor-pointer" : "cursor-grab"
-        }`}
+          disabled
+            ? "border-rose-400 cursor-pointer"
+            : "border-black cursor-grab"
+        } rounded-md touch-manipulation`}
         onClick={showModal}
       >
         <h3 className="text-base font-medium tracking-wide w-full truncate">
@@ -93,11 +93,7 @@ export default function Task({
         </ul>
       </div>
       <Modal show={modal} closeModal={closeModal}>
-        <EditTaskForm
-          task={task}
-          closeForm={closeModal}
-          boardTags={boardTags}
-        />
+        <TaskModal task={task} closeForm={closeModal} boardTags={boardTags} />
       </Modal>
     </>
   );

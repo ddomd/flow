@@ -1,12 +1,13 @@
+import { FormEvent, FormEventHandler, useContext } from "react";
+import { useForm } from "@inertiajs/react";
+import { debounce } from "@/utils/debounce";
+import { NotifyContext } from "@/context/NotifyContext";
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import PrimaryButton from "@/Components/PrimaryButton";
 import SecondaryButton from "@/Components/SecondaryButton";
 import TextInput from "@/Components/TextInput";
 import PinIcon from "@/Icons/PinIcon";
-import { NotifyContext } from "@/context/NotifyContext";
-import { useForm } from "@inertiajs/react";
-import { FormEvent, FormEventHandler, useContext } from "react";
 
 export default function AddBoardForm({
   currentBoards,
@@ -15,19 +16,21 @@ export default function AddBoardForm({
   currentBoards: number;
   closeForm: () => void;
 }) {
-  const { data, setData, errors, post, reset } = useForm({
+  const { data, setData, errors, post, reset, processing } = useForm({
     name: "",
     pinned: false,
     items: currentBoards,
   });
 
   const { sendNotify } = useContext(NotifyContext);
-  const submitHandler: FormEventHandler = (e: FormEvent) => {
-    e.preventDefault();
 
+  const debouncedSubmit = debounce(() => {
     post(route("boards.store"), {
       onSuccess: () => {
-        sendNotify(`You can create ${9 - currentBoards} more boards`, "success");
+        sendNotify(
+          `You can create ${9 - currentBoards} more boards`,
+          "success"
+        );
         reset();
         closeForm();
       },
@@ -39,6 +42,11 @@ export default function AddBoardForm({
         }
       },
     });
+  }, 200);
+
+  const submitHandler: FormEventHandler = (e: FormEvent) => {
+    e.preventDefault();
+    debouncedSubmit();
   };
 
   return (
@@ -78,8 +86,12 @@ export default function AddBoardForm({
       </section>
 
       <section className="flex justify-end space-x-2 mt-6">
-        <SecondaryButton onClick={closeForm}>Close</SecondaryButton>
-        <PrimaryButton type="submit">Create Board</PrimaryButton>
+        <SecondaryButton type="button" onClick={closeForm}>
+          Close
+        </SecondaryButton>
+        <PrimaryButton type="submit" disabled={processing}>
+          Create Board
+        </PrimaryButton>
       </section>
     </form>
   );

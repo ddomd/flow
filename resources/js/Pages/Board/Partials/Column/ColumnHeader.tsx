@@ -1,10 +1,10 @@
-import Modal from "@/Components/Modal";
-import TrashIcon from "@/Icons/TrashIcon";
 import { useModal } from "@/hooks/useModal";
-import DeleteColumnForm from "../Forms/DeleteColumnForm";
 import { useContext, useState } from "react";
 import { useForm } from "@inertiajs/react";
 import { NotifyContext } from "@/context/NotifyContext";
+import Modal from "@/Components/Modal";
+import TrashIcon from "@/Icons/TrashIcon";
+import DeleteForm from "../Forms/DeleteForm";
 
 export default function ColumnHeader({
   name,
@@ -20,7 +20,7 @@ export default function ColumnHeader({
   const [edit, setEdit] = useState(false);
   const { sendNotify } = useContext(NotifyContext);
 
-  const { data, setData, reset, put } = useForm({
+  const { data, setData, reset, put, processing } = useForm({
     name: name,
   });
 
@@ -34,23 +34,17 @@ export default function ColumnHeader({
       return;
     }
 
-    try {
-      put(route("columns.edit", { column: id }), {
-        onSuccess: () => {
-          toggleEditMode();
-          sendNotify("Column edited successfully", "success");
-        },
-        onError: () => {
-          toggleEditMode();
-          reset();
-          sendNotify("Failed to edit column", "fail");
-        },
-      });
-    } catch (e) {
-      toggleEditMode();
-      reset();
-      sendNotify("Failed to edit column", "fail");
-    }
+    put(route("columns.edit", { column: id }), {
+      onSuccess: () => {
+        toggleEditMode();
+        sendNotify("Column edited successfully", "success");
+      },
+      onError: () => {
+        toggleEditMode();
+        reset();
+        sendNotify("Failed to edit column", "fail");
+      },
+    });
   };
 
   const blurSubmit = () => sendData();
@@ -81,22 +75,25 @@ export default function ColumnHeader({
             autoFocus
           />
         ) : (
-          <h2
-            onClick={toggleEditMode}
+          <button
+            type="button"
             className="w-[90%] tracking-wider font-semibold truncate"
+            onClick={toggleEditMode}
+            disabled={processing}
           >
             {name}
-          </h2>
+          </button>
         )}
       </div>
       <button
-        onClick={showModal}
         className="p-1 border border-black rounded-full shadow-slanted-sm bg-red-400"
+        onClick={showModal}
+        disabled={processing}
       >
         <TrashIcon className="h-4 w-4" />
       </button>
       <Modal show={modal} closeModal={closeModal}>
-        <DeleteColumnForm name={name} id={id} closeForm={closeModal} />
+        <DeleteForm id={id} name={name} model="column" closeForm={closeModal} />
       </Modal>
     </div>
   );

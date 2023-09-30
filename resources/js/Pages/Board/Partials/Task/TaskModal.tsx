@@ -1,21 +1,23 @@
+import { FormEvent, FormEventHandler, useState } from "react";
+import { router, useForm } from "@inertiajs/react";
+import { TagElement, TaskElement } from "@/types/board";
+import { useModal } from "@/hooks/useModal";
+import { debounce } from "@/utils/debounce";
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import SecondaryButton from "@/Components/SecondaryButton";
 import TextInput from "@/Components/TextInput";
 import TextIcon from "@/Icons/TextIcon";
 import TitleIcon from "@/Icons/TitleIcon";
-import { TagElement, TaskElement } from "@/types/board";
-import { Link, useForm } from "@inertiajs/react";
-import { FormEvent, FormEventHandler } from "react";
 import Subtask from "../Subtask";
-import EditSubtaskPopover from "../Task/EditSubtaskPopover";
-import TaskTagsPopover from "../Task/TaskTagsPopover";
+import EditSubtaskPopover from "./EditSubtaskPopover";
+import TaskTagsPopover from "./TaskTagsPopover";
 import DangerButton from "@/Components/DangerButton";
 import Modal from "@/Components/Modal";
-import { useModal } from "@/hooks/useModal";
-import DeleteTaskForm from "./DeleteTaskForm";
+import Tag from "../Tag";
+import DeleteForm from "../Forms/DeleteForm";
 
-export default function EditTaskForm({
+export default function TaskModal({
   task,
   boardTags,
   closeForm,
@@ -24,26 +26,40 @@ export default function EditTaskForm({
   boardTags: TagElement[];
   closeForm: () => void;
 }) {
+  const [disableButton, setDisableButton] = useState(false);
   const { data, setData, errors, put, reset } = useForm({
     title: task.title,
-    description: task.description,
+    description: task.description ? task.description : "",
   });
 
   const { modal, showModal, closeModal } = useModal();
 
   const submitTextFields: FormEventHandler = (e: FormEvent) => {
-    if(!data.description) {
-      setData('description', "");
-    }
-
-    if (data.title === task.title && data.description === task.description) {
+    if (data.title === task.title && data.description === task.description)
       return;
-    }
 
-    put(route("tasks.edit", { task: task.id }), {
-      onSuccess: () => {},
-    });
+    if (
+      data.title === task.title &&
+      task.description === null &&
+      data.description === ""
+    )
+      return;
+
+    put(route("tasks.edit", { task: task.id }));
   };
+
+  const debouncedDetach = debounce((tag: TagElement) => {
+    router.put(
+      route("tags.detach", { task: task.id, tag: tag.id }),
+      {},
+      {
+        onStart: () => setDisableButton(true),
+        onFinish: () => setDisableButton(false),
+      }
+    );
+  }, 200);
+
+  const handleDetachTag = (tag: TagElement) => debouncedDetach(tag);
 
   return (
     <section className="flex flex-col p-4 space-y-3 h-auto">
@@ -93,20 +109,18 @@ export default function EditTaskForm({
         <ul className="flex flex-wrap space-x-2">
           {task.tags.map((tag) => (
             <li key={tag.id}>
-              <Link
-                as="button"
-                method="put"
-                href={route("tags.detach", { task: task.id, tag: tag.id })}
-                className={`shrink-0 p-1 rounded-md ${tag.color} capitalize text-sm font-bold border border-black`}
-              >
-                &ndash; {tag.name}
-              </Link>
+              <Tag
+                tag={tag}
+                type="detach"
+                handleTag={(tag) => handleDetachTag(tag)}
+                disabled={disableButton}
+              />
             </li>
           ))}
         </ul>
-        <TaskTagsPopover boardTags={boardTags} taskId={task.id} />
+        <TaskTagsPopover boardTags={boardTags} task={task} />
       </div>
-      
+
       <div className="flex justify-end space-x-2 mt-4">
         <DangerButton type="button" onClick={showModal}>
           delete
@@ -117,7 +131,12 @@ export default function EditTaskForm({
       </div>
 
       <Modal show={modal} closeModal={closeModal}>
-        <DeleteTaskForm id={task.id} name={task.title} closeForm={closeModal} />
+        <DeleteForm
+          id={task.id}
+          name={task.title}
+          model="task"
+          closeForm={closeModal}
+        />
       </Modal>
     </section>
   );

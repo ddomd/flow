@@ -1,5 +1,6 @@
-import { ColumnElement, TagElement, TaskElement } from "@/types/board";
-import Column from "./Column";
+import { useState } from "react";
+import { router } from "@inertiajs/react";
+import { useTasks } from "@/hooks/useTasks";
 import {
   DndContext,
   DragEndEvent,
@@ -12,12 +13,17 @@ import {
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
-import { useState } from "react";
-import { router } from "@inertiajs/react";
-import { useTasks } from "@/hooks/useTasks";
+import { ColumnElement, TagElement, TaskElement } from "@/types/board";
+import Column from "./Column";
 import Placeholder from "../Task/Placeholder";
 
-export default function ColumnList({ columns, tags }: { columns: ColumnElement[], tags: TagElement[]; }) {
+export default function ColumnList({
+  columns,
+  tags,
+}: {
+  columns: ColumnElement[];
+  tags: TagElement[];
+}) {
   const [activeTask, setActiveTask] = useState<TaskElement | null>(null);
 
   const { reorderTasks, moveTasks } = useTasks();
@@ -158,9 +164,12 @@ export default function ColumnList({ columns, tags }: { columns: ColumnElement[]
     }
 
     // Update the task's position and column_id using the router
-    router.put(route("tasks.move", { column: dragging.column_id, task: dragging.id }), {
-      position: dragging.position,
-    });
+    router.put(
+      route("tasks.move", { column: dragging.column_id, task: dragging.id }),
+      {
+        position: dragging.position,
+      }
+    );
   };
 
   return (
@@ -173,7 +182,12 @@ export default function ColumnList({ columns, tags }: { columns: ColumnElement[]
     >
       <div className="w-full mt-6 mb-2 flex gap-x-10 overflow-x-scroll touch-pan-x column-scroll">
         {columns.map((column, index) => (
-          <Column key={column.id} column={column} boardTags={tags} index={index} />
+          <Column
+            key={column.id}
+            column={column}
+            boardTags={tags}
+            index={index}
+          />
         ))}
         <DragOverlay>
           {activeTask && <Placeholder task={activeTask} />}

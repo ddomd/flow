@@ -31,8 +31,8 @@ export default function TagsPopover({
         leaveFrom="opacity-100 translate-y-0"
         leaveTo="opacity-0 -translate-y-1"
       >
-        <Popover.Panel className="absolute top-8 right-1">
-          <Container className="p-3 w-48 ">
+        <Popover.Panel className="z-50 absolute top-8 right-1">
+          <Container className="p-3 w-48">
             <div className="mt-2 h-16 w-full">
               <Popover className="relative">
                 <Popover.Button className="w-full py-1 uppercase text-xs border border-dashed border-black rounded-md">
@@ -48,7 +48,11 @@ export default function TagsPopover({
                   leaveTo="opacity-0 -translate-y-1"
                 >
                   <Popover.Panel className="absolute -left-8">
-                    {({ close }) => <AddTagForm boardId={id} closeForm={close} />}
+                    {({ close }) => (
+                      <Container className="w-64">
+                        <AddTagForm boardId={id} closeForm={close} />
+                      </Container>
+                    )}
                   </Popover.Panel>
                 </Transition>
               </Popover>
@@ -79,7 +83,6 @@ export default function TagsPopover({
                   </button>
                   <span
                     className={`inline-flex justify-center items-center w-full py-1 ${tag.color} rounded-md border border-black text-xs tracking-wide font-medium capitalize`}
-                    onClick={() => getFilter(tag.name)}
                   >
                     {tag.name}
                   </span>

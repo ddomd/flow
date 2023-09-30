@@ -1,9 +1,10 @@
+import { Head } from "@inertiajs/react";
+import { FilterProvider } from "@/context/FilterContext";
 import { PageProps } from "@/types";
 import { BoardElement } from "@/types/board";
-import { Head } from "@inertiajs/react";
 import ColumnList from "./Partials/Column/ColumnList";
 import BoardMenu from "./Partials/HeaderMenu/BoardMenu";
-import { FilterProvider } from "@/context/FilterContext";
+
 
 export default function Columns({ board }: PageProps<{ board: BoardElement }>) {
   return (
