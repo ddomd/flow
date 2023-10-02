@@ -6,6 +6,8 @@ import InputError from "@/Components/InputError";
 import PrimaryButton from "@/Components/PrimaryButton";
 import SecondaryButton from "@/Components/SecondaryButton";
 import TextInput from "@/Components/TextInput";
+import TagIcon from "@/Icons/TagIcon";
+import SwatchIcon from "@/Icons/SwatchIcon";
 
 export default function AddTagForm({
   boardId,
@@ -39,7 +41,11 @@ export default function AddTagForm({
       onSubmit={submitHandler}
       className="flex flex-col space-y-4 p-3 dark:text-white"
     >
-      <h3 className="text-left text-sm font-bold">Tag name</h3>
+      <div className="flex items-center gap-x-2">
+        <TagIcon className="h-4 w-4" />
+        <h3 className="text-left text-sm font-bold">Tag name</h3>
+      </div>
+
       <TextInput
         id="tag-name"
         name="tag-name"
@@ -50,7 +56,10 @@ export default function AddTagForm({
         autoFocus
       />
       <InputError message={errors.name || errors.items} />
-      <h3 className="text-left text-sm font-bold">Tag color</h3>
+      <div className="flex items-center gap-x-2">
+        <SwatchIcon className="h-4 w-4" />
+        <h3 className="text-left text-sm font-bold">Tag color</h3>
+      </div>
       <ColorPicker onColorSelect={(color) => setData("color", color)} />
       <div className="flex justify-center gap-x-3 ">
         <SecondaryButton type="button" onClick={closeForm}>

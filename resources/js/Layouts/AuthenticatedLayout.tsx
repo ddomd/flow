@@ -7,6 +7,9 @@ import NavLogo from "@/Icons/NavLogo";
 import Notification from "@/Components/Notification";
 import LeftArrowIcon from "@/Icons/LeftArrowIcon";
 import ThemeSwitcher from "@/Components/ThemeSwitcher";
+import TitleIcon from "@/Icons/TitleIcon";
+import UserIcon from "@/Icons/UserIcon";
+import LogoutIcon from "@/Icons/LogoutIcon";
 
 export default function Authenticated({ children }: PropsWithChildren) {
   const [show, setShow] = useState(false);
@@ -39,7 +42,7 @@ export default function Authenticated({ children }: PropsWithChildren) {
               enterFrom="opacity-0 -translate-x-1/3"
               enterTo="opacity-100"
             >
-              <Link href="/" >
+              <Link href="/">
                 <NavLogo className="sm:-translate-y-1 h-5 dark:text-white" />
               </Link>
             </Transition.Child>
@@ -50,11 +53,11 @@ export default function Authenticated({ children }: PropsWithChildren) {
               enterFrom="opacity-0 translate-x-1/3"
               enterTo="opacity-100"
             >
-              <ul className="flex space-x-4 text-base tracking-wide">
+              <ul className="flex space-x-4 text-base font-medium tracking-wide">
                 <li>
                   <Link
                     href={route("boards")}
-                    className="hidden sm:block hover:text-pastel-coral"
+                    className="hidden sm:block hover:text-amber-500 dark:hover:text-violet-600"
                   >
                     Boards
                   </Link>
@@ -62,7 +65,7 @@ export default function Authenticated({ children }: PropsWithChildren) {
                 <li>
                   <Link
                     href={route("profile.edit")}
-                    className="hidden sm:block hover:text-pastel-coral "
+                    className="hidden sm:block hover:text-amber-500 dark:hover:text-violet-600 "
                   >
                     Profile
                   </Link>
@@ -73,7 +76,7 @@ export default function Authenticated({ children }: PropsWithChildren) {
                     href={route("logout")}
                     method="post"
                     as="button"
-                    className="hidden sm:block hover:text-pastel-coral"
+                    className="hidden sm:block hover:text-amber-500 dark:hover:text-violet-600"
                   >
                     Logout
                   </Link>
@@ -110,25 +113,31 @@ export default function Authenticated({ children }: PropsWithChildren) {
                     <LeftArrowIcon className="rotate-180 h-7 w-7" />
                   </button>
 
-                  <NavLogo className="self-center h-32 w-32" />
+                  <NavLogo className="ml-4 h-32 w-32" />
                   <nav className="">
-                    <ul className="h-full flex flex-col space-y-3 ml-8 tracking-wide">
+                    <ul className="h-full flex flex-col space-y-3 ml-4 tracking-wide font-medium">
                       <li>
                         <Link
                           onClick={toggleSidebar}
                           href={route("boards")}
-                          className="hover:text-pastel-coral"
+                          className="hover:text-amber-500 dark:hover:text-violet-600"
                         >
-                          Boards
+                          <div className="flex items-center gap-x-3">
+                            <TitleIcon className="h-5 w-5" />
+                            <span>Boards</span>
+                          </div>
                         </Link>
                       </li>
                       <li>
                         <Link
                           onClick={toggleSidebar}
                           href={route("profile.edit")}
-                          className="hover:text-pastel-coral"
+                          className="hover:text-amber-500 dark:hover:text-violet-600"
                         >
-                          Profile
+                          <div className="flex items-center gap-x-3">
+                            <UserIcon className="h-5 w-5" />
+                            <span>Profile</span>
+                          </div>
                         </Link>
                       </li>
 
@@ -138,9 +147,12 @@ export default function Authenticated({ children }: PropsWithChildren) {
                           href={route("logout")}
                           method="post"
                           as="button"
-                          className="hover:text-pastel-coral"
+                          className="hover:text-amber-500 dark:hover:text-violet-600"
                         >
-                          Logout
+                          <div className="flex items-center gap-x-3">
+                            <LogoutIcon className="h-5 w-5" />
+                            <span>Logout</span>
+                          </div>
                         </Link>
                       </li>
                     </ul>

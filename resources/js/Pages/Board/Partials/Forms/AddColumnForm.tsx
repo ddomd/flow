@@ -8,6 +8,8 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import SecondaryButton from "@/Components/SecondaryButton";
 import TextInput from "@/Components/TextInput";
 import ColorPicker from "@/Components/ColorPicker";
+import TitleIcon from "@/Icons/TitleIcon";
+import SwatchIcon from "@/Icons/SwatchIcon";
 
 export default function AddColumnForm({
   boardId,
@@ -18,7 +20,6 @@ export default function AddColumnForm({
   columnLength: number;
   closeForm: () => void;
 }) {
-
   const { data, setData, errors, post, reset, processing } = useForm({
     name: "",
     color: "bg-red-400",
@@ -56,7 +57,10 @@ export default function AddColumnForm({
     <form onSubmit={submitHandler} className="p-4 space-y-6 dark:text-white">
       <h2 className="text-center text-xl font-bold">New Column</h2>
       <div>
-        <InputLabel htmlFor="name" value="Name" />
+        <div className="flex items-center gap-x-3">
+          <TitleIcon className="h-5 w-5" />
+          <InputLabel htmlFor="name" value="Name" />
+        </div>
         <TextInput
           id="name"
           name="name"
@@ -70,7 +74,10 @@ export default function AddColumnForm({
         <InputError message={errors.name} className="mt-2" />
       </div>
       <div>
-        <h3 className="font-bold mb-3">Column color</h3>
+        <div className="flex items-center gap-x-3 mb-3">
+          <SwatchIcon className="h-5 w-5" />
+          <h3 className="font-bold">Column color</h3>
+        </div>
         <ColorPicker onColorSelect={(color) => setData("color", color)} />
       </div>
       <div className="flex justify-end space-x-2">

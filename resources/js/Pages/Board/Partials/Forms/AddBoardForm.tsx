@@ -8,6 +8,7 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import SecondaryButton from "@/Components/SecondaryButton";
 import TextInput from "@/Components/TextInput";
 import PinIcon from "@/Icons/PinIcon";
+import TitleIcon from "@/Icons/TitleIcon";
 
 export default function AddBoardForm({
   currentBoards,
@@ -50,9 +51,12 @@ export default function AddBoardForm({
   };
 
   return (
-    <form onSubmit={submitHandler} className="p-4 dark: text-white">
+    <form onSubmit={submitHandler} className="p-4 dark:text-white">
       <h2 className="text-center text-xl font-semibold">New Board</h2>
-      <InputLabel htmlFor="name" value="Name" className="mt-3" />
+      <div className="flex items-center gap-x-3">
+        <TitleIcon className="h-5 w-5" />
+        <InputLabel htmlFor="name" value="Name" className="mt-3" />
+      </div>
       <TextInput
         id="name"
         name="name"
@@ -64,8 +68,11 @@ export default function AddBoardForm({
       />
       <InputError message={errors.name} className="mt-2" />
 
-      <section className="flex justify-between mt-8">
-        <InputLabel htmlFor="pinned" value="Pin board?" />
+      <div className="flex justify-between my-8">
+        <div className="flex gap-x-3">
+          <PinIcon className="h-5 w-5" />
+          <InputLabel htmlFor="pinned" value="Pin board?" />
+        </div>
         <div>
           <input
             id="pinned"
@@ -84,7 +91,7 @@ export default function AddBoardForm({
             <PinIcon className="h-5 w-5 dark:text-white" />
           </div>
         </div>
-      </section>
+      </div>
 
       <section className="flex justify-end space-x-2 mt-6">
         <SecondaryButton type="button" onClick={closeForm}>

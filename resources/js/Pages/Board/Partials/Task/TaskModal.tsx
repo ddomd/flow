@@ -16,6 +16,7 @@ import DangerButton from "@/Components/DangerButton";
 import Modal from "@/Components/Modal";
 import Tag from "../Tag";
 import DeleteForm from "../Forms/DeleteForm";
+import TagIcon from "@/Icons/TagIcon";
 
 export default function TaskModal({
   task,
@@ -105,7 +106,10 @@ export default function TaskModal({
       </div>
 
       <div className="space-y-2">
-        <h2 className="tracking-wide font-bold">{"# Tags"}</h2>
+        <div className="flex items-center gap-x-3">
+          <TagIcon className="h-5 w-5" />
+          <h2 className="tracking-wide font-bold">Tags</h2>
+        </div>
         <ul className="flex flex-wrap space-x-2">
           {task.tags.map((tag) => (
             <li key={tag.id}>

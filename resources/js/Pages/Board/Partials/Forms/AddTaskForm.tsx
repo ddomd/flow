@@ -18,6 +18,7 @@ import TextIcon from "@/Icons/TextIcon";
 import TitleIcon from "@/Icons/TitleIcon";
 import AddSubtaskPopover from "../Task/AddSubtaskPopover";
 import TaskTagsPopover from "../Task/TaskTagsPopover";
+import TagIcon from "@/Icons/TagIcon";
 
 export default function AddTaskForm({
   columnId,
@@ -170,7 +171,10 @@ export default function AddTaskForm({
       </div>
 
       <div className="space-y-2">
-        <h2 className="tracking-wide font-bold">{"# Tags"}</h2>
+        <div className="flex items-center gap-x-3">
+          <TagIcon className="h-5 w-5" />
+          <h2 className="tracking-wide font-bold">Tags</h2>
+        </div>
         <ul className="flex flex-wrap space-x-2">
           {tags.map((tag, index) => (
             <li key={tag.id}>
