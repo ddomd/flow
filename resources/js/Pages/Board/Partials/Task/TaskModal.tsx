@@ -10,13 +10,13 @@ import TextInput from "@/Components/TextInput";
 import TextIcon from "@/Icons/TextIcon";
 import TitleIcon from "@/Icons/TitleIcon";
 import Subtask from "../Subtask";
-import EditSubtaskPopover from "./EditSubtaskPopover";
-import TaskTagsPopover from "./TaskTagsPopover";
+import AttachTagsPopover from "./AttachTagsPopover";
 import DangerButton from "@/Components/DangerButton";
 import Modal from "@/Components/Modal";
 import Tag from "../Tag";
 import DeleteForm from "../Forms/DeleteForm";
 import TagIcon from "@/Icons/TagIcon";
+import SubtasksPopover from "./SubtasksPopover";
 
 export default function TaskModal({
   task,
@@ -102,7 +102,7 @@ export default function TaskModal({
         {task.subtasks.map((subtask) => (
           <Subtask key={subtask.id} subtask={subtask} />
         ))}
-        <EditSubtaskPopover taskId={task.id} />
+        <SubtasksPopover taskId={task.id} />
       </div>
 
       <div className="space-y-2">
@@ -122,7 +122,7 @@ export default function TaskModal({
             </li>
           ))}
         </ul>
-        <TaskTagsPopover boardTags={boardTags} task={task} />
+        <AttachTagsPopover boardTags={boardTags} task={task} />
       </div>
 
       <div className="flex justify-end space-x-2 mt-4">

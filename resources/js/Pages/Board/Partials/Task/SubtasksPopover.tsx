@@ -1,14 +1,17 @@
 import Container from "@/Components/Container";
 import { Popover, Transition } from "@headlessui/react";
 import { Fragment } from "react";
+import AppendSubtaskForm from "../Forms/AppendSubtaskForm";
 import AddSubtaskForm from "../Forms/AddSubtaskForm";
 
-export default function AddSubtaskPopover({
-  subtasksLength,
-  submitForm,
+export default function SubtasksPopover({
+  taskId,
+  subtasksLength=0,
+  submitForm=(value: string) => {},
 }: {
-  subtasksLength: number;
-  submitForm: (name: string) => void;
+  taskId?: number;
+  subtasksLength?: number;
+  submitForm?: (name: string) => void;
 }) {
   return (
     <Popover className="relative">
@@ -27,11 +30,15 @@ export default function AddSubtaskPopover({
         <Popover.Panel className="absolute bottom-10 z-50">
           {({ close }) => (
             <Container className="h-auto w-auto">
-              <AddSubtaskForm
-                subtasksLength={subtasksLength}
-                submitForm={submitForm}
-                closeForm={close}
-              />
+              {taskId ? (
+                <AddSubtaskForm taskId={taskId} closeForm={close} />
+              ) : (
+                <AppendSubtaskForm
+                  subtasksLength={subtasksLength}
+                  submitForm={submitForm}
+                  closeForm={close}
+                />
+              )}
             </Container>
           )}
         </Popover.Panel>

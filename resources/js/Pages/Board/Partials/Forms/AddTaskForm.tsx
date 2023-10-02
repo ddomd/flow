@@ -16,9 +16,9 @@ import SecondaryButton from "@/Components/SecondaryButton";
 import TextInput from "@/Components/TextInput";
 import TextIcon from "@/Icons/TextIcon";
 import TitleIcon from "@/Icons/TitleIcon";
-import AddSubtaskPopover from "../Task/AddSubtaskPopover";
-import TaskTagsPopover from "../Task/TaskTagsPopover";
+import AttachTagsPopover from "../Task/AttachTagsPopover";
 import TagIcon from "@/Icons/TagIcon";
+import SubtasksPopover from "../Task/SubtasksPopover";
 
 export default function AddTaskForm({
   columnId,
@@ -164,7 +164,7 @@ export default function AddTaskForm({
           </div>
         ))}
         <InputError message={errors.subtasks} />
-        <AddSubtaskPopover
+        <SubtasksPopover
           subtasksLength={data.subtasks.length}
           submitForm={addSubtask}
         />
@@ -189,7 +189,7 @@ export default function AddTaskForm({
           ))}
         </ul>
         <InputError message={errors.tags} />
-        <TaskTagsPopover boardTags={boardTags} grabTag={attachTag} />
+        <AttachTagsPopover boardTags={boardTags} grabTag={attachTag} />
       </div>
 
       <div className="flex justify-end space-x-2 mt-4">

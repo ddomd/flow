@@ -4,37 +4,37 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import SecondaryButton from "@/Components/SecondaryButton";
 import TextInput from "@/Components/TextInput";
 import TextIcon from "@/Icons/TextIcon";
-import { useState } from "react";
+import { NotifyContext } from "@/context/NotifyContext";
+import { useForm } from "@inertiajs/react";
+import { FormEvent, FormEventHandler, useContext, useState } from "react";
 
 export default function AddSubtaskForm({
-  subtasksLength,
-  submitForm,
+  taskId,
   closeForm,
 }: {
-  subtasksLength: number;
-  submitForm: (name: string) => void;
+  taskId: number;
   closeForm: () => void;
 }) {
-  const [name, setName] = useState("");
-  const [error, setError] = useState("");
+  const { post, data, setData, reset, errors } = useForm({
+    name: "",
+    items: 0,
+  });
 
-  const handleSubmit = () => {
-    if(name.trim() === "") {
-      setError("The name field is required.")
-      return;
-    }
+  const submitForm: FormEventHandler<HTMLFormElement> = (
+    e: FormEvent<HTMLFormElement>
+  ) => {
+    e.preventDefault();
 
-    if(subtasksLength >= 5) {
-      setError("You can only create 5 subtasks");
-      return;
-    }
-
-    submitForm(name);
-    closeForm();
+    post(route("subtasks.store", { task: taskId }), {
+      onSuccess: () => {
+        reset();
+        closeForm();
+      },
+    });
   };
 
   return (
-    <section className="p-3 flex flex-col">
+    <form className="p-3 flex flex-col" onSubmit={submitForm}>
       <h2 className="text-center text-xl font-bold tracking-wide">
         New Subtask
       </h2>
@@ -48,20 +48,18 @@ export default function AddSubtaskForm({
         name="subtask"
         placeholder="Subtask name..."
         className="my-3"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
+        value={data.name}
+        onChange={(e) => setData("name", e.target.value)}
         autoFocus
       />
-      <InputError message={error} />
+      <InputError message={errors.name || errors.items} />
 
       <div className="flex justify-end space-x-3 mt-6">
         <SecondaryButton type="button" onClick={closeForm}>
           close
         </SecondaryButton>
-        <PrimaryButton type="button" onClick={handleSubmit}>
-          add subtask
-        </PrimaryButton>
+        <PrimaryButton type="submit">add subtask</PrimaryButton>
       </div>
-    </section>
+    </form>
   );
 }

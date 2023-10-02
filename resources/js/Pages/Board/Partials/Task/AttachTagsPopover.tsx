@@ -7,7 +7,7 @@ import { router } from "@inertiajs/react";
 import { Fragment, useState } from "react";
 import Tag from "../Tag";
 
-export default function TaskTagsPopover({
+export default function AttachTagsPopover({
   boardTags,
   task,
   grabTag,
