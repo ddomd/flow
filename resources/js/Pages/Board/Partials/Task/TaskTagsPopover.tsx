@@ -40,7 +40,7 @@ export default function TaskTagsPopover({
 
   return (
     <Popover className="relative w-full">
-      <Popover.Button className="w-full bg-transparent text-xs text-center uppercase tracking-wide py-1 px-2 rounded-md border border-dashed border-black">
+      <Popover.Button className="w-full bg-transparent text-xs text-center font-bold dark:text-white uppercase tracking-wide py-1 px-2 rounded-md border border-dashed border-black dark:border-white">
         + Add Tag
       </Popover.Button>
       <Transition
@@ -59,7 +59,7 @@ export default function TaskTagsPopover({
                 <h3 className="text-sm font-medium mb-2">Available tags</h3>
                 <ul className="my-1 flex gap-x-2 h-10 overflow-x-scroll column-scroll touch-pan-x">
                   {boardTags.map((tag) => (
-                    <li key={tag.id} className="shrink-0">
+                    <li key={tag.id} className="shrink-0 text-black">
                       <Tag
                         tag={tag}
                         type="attach"

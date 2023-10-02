@@ -21,7 +21,7 @@ export default function Tag({
       }}
       className={`shrink-0 p-1 rounded-md ${tag.color} capitalize ${
         size === "sm" ? "text-sm" : "text-xs"
-      } font-bold border border-black`}
+      } font-bold border border-black dark:border-white dark:text-white`}
       disabled={disabled}
     >
       {`${type === "detach" ? "\u2013" : type === "attach" ? "\uff0b" : ""} ${

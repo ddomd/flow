@@ -44,7 +44,7 @@ export default function DeleteUserForm({ className = '' }: { className?: string 
     };
 
     return (
-        <section className={`space-y-6 ${className}`}>
+        <section className={`space-y-6 dark:text-white ${className}`}>
             <header>
                 <h2 className="text-lg font-semibold">Delete Account</h2>
 
@@ -56,7 +56,7 @@ export default function DeleteUserForm({ className = '' }: { className?: string 
             <DangerButton onClick={confirmUserDeletion}>Delete Account</DangerButton>
 
             <Modal show={confirmingUserDeletion} closeModal={closeModal}>
-                <form onSubmit={deleteUser} className="p-6">
+                <form onSubmit={deleteUser} className="p-6 dark:text-white">
                     <h2 className="text-lg font-semibold">
                         Are you sure you want to delete your account?
                     </h2>

@@ -40,7 +40,7 @@ function Column({
       : column.tasks;
 
   return (
-    <div className="pb-2 shrink-0 w-[18rem] flex flex-col items-center space-y-3">
+    <div className="py-2 shrink-0 w-[18rem] flex flex-col items-center space-y-3">
       <ColumnHeader
         name={column.name}
         color={column.color}

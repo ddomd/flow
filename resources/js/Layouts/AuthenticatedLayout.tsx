@@ -6,6 +6,7 @@ import BurgerIcon from "@/Icons/BurgerIcon";
 import NavLogo from "@/Icons/NavLogo";
 import Notification from "@/Components/Notification";
 import LeftArrowIcon from "@/Icons/LeftArrowIcon";
+import ThemeSwitcher from "@/Components/ThemeSwitcher";
 
 export default function Authenticated({ children }: PropsWithChildren) {
   const [show, setShow] = useState(false);
@@ -27,7 +28,7 @@ export default function Authenticated({ children }: PropsWithChildren) {
   return (
     <>
       <div className="flex flex-col overflow-hidden h-screen">
-        <header className="h-10 bg-orange-100 w-full">
+        <header className="h-10 bg-orange-100 dark:bg-zinc-900 dark:text-white w-full">
           <Transition
             as="nav"
             show={show}
@@ -38,8 +39,8 @@ export default function Authenticated({ children }: PropsWithChildren) {
               enterFrom="opacity-0 -translate-x-1/3"
               enterTo="opacity-100"
             >
-              <Link href="/">
-                <NavLogo className="h-5" />
+              <Link href="/" >
+                <NavLogo className="sm:-translate-y-1 h-5 dark:text-white" />
               </Link>
             </Transition.Child>
 
@@ -48,13 +49,12 @@ export default function Authenticated({ children }: PropsWithChildren) {
               enter="transform transition duration-[.3s] ease-in"
               enterFrom="opacity-0 translate-x-1/3"
               enterTo="opacity-100"
-              className="hidden sm:block"
             >
               <ul className="flex space-x-4 text-base tracking-wide">
                 <li>
                   <Link
                     href={route("boards")}
-                    className="hover:text-pastel-coral"
+                    className="hidden sm:block hover:text-pastel-coral"
                   >
                     Boards
                   </Link>
@@ -62,7 +62,7 @@ export default function Authenticated({ children }: PropsWithChildren) {
                 <li>
                   <Link
                     href={route("profile.edit")}
-                    className="hover:text-pastel-coral "
+                    className="hidden sm:block hover:text-pastel-coral "
                   >
                     Profile
                   </Link>
@@ -73,23 +73,24 @@ export default function Authenticated({ children }: PropsWithChildren) {
                     href={route("logout")}
                     method="post"
                     as="button"
-                    className="hover:text-pastel-coral"
+                    className="hidden sm:block hover:text-pastel-coral"
                   >
                     Logout
                   </Link>
                 </li>
+                <li>
+                  <button
+                    type="button"
+                    className="block sm:hidden"
+                    onClick={toggleSidebar}
+                  >
+                    <BurgerIcon className="h-7 w-7" />
+                  </button>
+                </li>
+                <li>
+                  <ThemeSwitcher />
+                </li>
               </ul>
-            </Transition.Child>
-
-            <Transition.Child
-              as="button"
-              enter="transform transition duration-[.3s] ease-in"
-              enterFrom="opacity-0 translate-x-1/3"
-              enterTo="opacity-100"
-              className="block sm:hidden"
-              onClick={toggleSidebar}
-            >
-              <BurgerIcon className="h-8 w-8" />
             </Transition.Child>
 
             {sidebar && (
@@ -99,12 +100,12 @@ export default function Authenticated({ children }: PropsWithChildren) {
                   enter="transform transition duration-100 ease-in"
                   enterFrom="opacity-0 translate-x-2/3"
                   enterTo="opacity-100"
-                  className="fixed z-50 h-screen flex flex-col space-y-4 bg-orange-100 w-1/2 right-0 top-0"
+                  className="fixed z-50 h-screen flex flex-col space-y-4 bg-orange-100 dark:bg-zinc-900 w-1/2 right-0 top-0"
                 >
                   <button
                     type="button"
                     onClick={toggleSidebar}
-                    className="h-10 w-16 px-2 top-0 -left-10 absolute bg-orange-100 rounded-md"
+                    className="h-10 w-16 px-2 top-0 -left-10 absolute bg-orange-100 dark:bg-zinc-900 rounded-md"
                   >
                     <LeftArrowIcon className="rotate-180 h-7 w-7" />
                   </button>
@@ -146,14 +147,14 @@ export default function Authenticated({ children }: PropsWithChildren) {
                   </nav>
                 </Transition.Child>
                 <div
-                  className="z-30 fixed top-0 left-0 h-screen w-screen bg-white/40"
+                  className="z-30 fixed top-0 left-0 h-screen w-screen bg-zinc-900/50"
                   onClick={toggleSidebar}
                 ></div>
               </>
             )}
           </Transition>
         </header>
-        <main className="w-screen h-full overflow-hidden bg-orange-100">
+        <main className="w-screen h-full overflow-hidden bg-orange-100 dark:bg-zinc-900">
           {children}
           {notify.show && (
             <Notification

@@ -12,7 +12,7 @@ export default function AddSubtaskPopover({
 }) {
   return (
     <Popover className="relative">
-      <Popover.Button className="w-full py-1 uppercase text-xs border border-dashed border-black rounded-md">
+      <Popover.Button className="w-full py-1 uppercase text-xs font-bold dark:text-white border border-dashed border-black dark:border-white rounded-md">
         + Add Subtask
       </Popover.Button>
       <Transition

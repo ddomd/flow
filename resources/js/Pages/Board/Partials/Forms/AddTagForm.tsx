@@ -37,7 +37,7 @@ export default function AddTagForm({
   return (
     <form
       onSubmit={submitHandler}
-      className="flex flex-col space-y-4 p-3"
+      className="flex flex-col space-y-4 p-3 dark:text-white"
     >
       <h3 className="text-left text-sm font-bold">Tag name</h3>
       <TextInput
@@ -46,6 +46,7 @@ export default function AddTagForm({
         value={data.name}
         onChange={(e) => setData("name", e.target.value.toLowerCase())}
         className="w-full"
+        placeholder="Tag name"
         autoFocus
       />
       <InputError message={errors.name || errors.items} />

@@ -29,19 +29,20 @@ export default function Register() {
   return (
     <GuestLayout>
       <Head title="Register" />
-      
-      <form onSubmit={submit} className="mt-3">
+
+      <form onSubmit={submit} className="mt-3 dark:text-white">
         <div>
-          <InputLabel htmlFor="name" value="Name" />
+          <InputLabel htmlFor="username" value="Username" />
 
           <TextInput
-            id="name"
-            name="name"
+            id="username"
+            name="username"
             value={data.name}
             className="mt-1 block w-full"
             autoComplete="name"
             isFocused={true}
             onChange={(e) => setData("name", e.target.value)}
+            placeholder="Username"
             required
           />
 
@@ -59,6 +60,7 @@ export default function Register() {
             className="mt-1 block w-full"
             autoComplete="username"
             onChange={(e) => setData("email", e.target.value)}
+            placeholder="Email"
             required
           />
 
@@ -76,6 +78,7 @@ export default function Register() {
             className="mt-1 block w-full"
             autoComplete="new-password"
             onChange={(e) => setData("password", e.target.value)}
+            placeholder="Password"
             required
           />
 
@@ -96,6 +99,7 @@ export default function Register() {
             className="mt-1 block w-full"
             autoComplete="new-password"
             onChange={(e) => setData("password_confirmation", e.target.value)}
+            placeholder="Confirm password"
             required
           />
 
@@ -105,7 +109,7 @@ export default function Register() {
         <div className="flex items-center justify-end mt-4">
           <Link
             href={route("login")}
-            className="underline text-sm text-black hover:text-amber-400 rounded-md focus:outline-none focus:ring-0"
+            className="underline text-sm text-black dark:text-white hover:text-amber-400 hover:dark:text-violet-600 rounded-md focus:outline-none focus:ring-0"
           >
             Already registered?
           </Link>

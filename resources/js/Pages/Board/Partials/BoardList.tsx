@@ -22,7 +22,7 @@ export default function BoardList({
         className
       }
     >
-      <h2 className="h-14 pt-3 p-3 w-full font-bold tracking-wide">My Boards</h2>
+      <h2 className="h-14 pt-3 p-3 w-full font-bold tracking-wide dark:text-white">My Boards</h2>
       <ul className="task-scroll w-full h-[85%] flex flex-col items-center overflow-y-scroll touch-pan-y">
         {filteredBoards.map((board) => (
           <BoardCard key={board.id} board={board} />

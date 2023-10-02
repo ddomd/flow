@@ -15,9 +15,9 @@ export default function BoardMenu({ board }: { board: BoardElement }) {
     <HeaderMenu>
       <div className="shrink-0 flex items-center gap-x-2 w-[70%]">
         <Link href={route("boards")}>
-          <LeftArrowIcon className="h-5 w-5 text-black" />
+          <LeftArrowIcon className="h-5 w-5 text-black dark:text-white" />
         </Link>
-        <span className="px-1 text-lg uppercase tracking-wide font-bold  truncate">
+        <span className="px-1 text-lg uppercase tracking-wide font-bold dark:text-white truncate">
           {board.name}
         </span>
       </div>

@@ -7,6 +7,7 @@ import InputLabel from "@/Components/InputLabel";
 import PrimaryButton from "@/Components/PrimaryButton";
 import SecondaryButton from "@/Components/SecondaryButton";
 import TextInput from "@/Components/TextInput";
+import ColorPicker from "@/Components/ColorPicker";
 
 export default function AddColumnForm({
   boardId,
@@ -17,18 +18,10 @@ export default function AddColumnForm({
   columnLength: number;
   closeForm: () => void;
 }) {
-  const colors = [
-    "bg-red-400",
-    "bg-pink-400",
-    "bg-blue-400",
-    "bg-green-400",
-    "bg-amber-400",
-    "bg-violet-400",
-  ];
 
   const { data, setData, errors, post, reset, processing } = useForm({
     name: "",
-    color: colors[Math.floor(Math.random() * colors.length)],
+    color: "bg-red-400",
     items: columnLength,
   });
 
@@ -60,28 +53,34 @@ export default function AddColumnForm({
   };
 
   return (
-    <form onSubmit={submitHandler} className="p-4 ">
+    <form onSubmit={submitHandler} className="p-4 space-y-6 dark:text-white">
       <h2 className="text-center text-xl font-bold">New Column</h2>
-      <InputLabel htmlFor="name" value="Name" className="mt-3" />
-      <TextInput
-        id="name"
-        name="name"
-        type="text"
-        value={data.name}
-        onChange={(e) => setData("name", e.target.value)}
-        className="w-full mt-3"
-        placeholder="Column name"
-      />
-      <InputError message={errors.name} className="mt-2" />
-
-      <section className="flex justify-end space-x-2 mt-4">
+      <div>
+        <InputLabel htmlFor="name" value="Name" />
+        <TextInput
+          id="name"
+          name="name"
+          type="text"
+          value={data.name}
+          onChange={(e) => setData("name", e.target.value)}
+          className="w-full mt-3"
+          placeholder="Column name"
+          autoFocus
+        />
+        <InputError message={errors.name} className="mt-2" />
+      </div>
+      <div>
+        <h3 className="font-bold mb-3">Column color</h3>
+        <ColorPicker onColorSelect={(color) => setData("color", color)} />
+      </div>
+      <div className="flex justify-end space-x-2">
         <SecondaryButton type="button" onClick={closeForm}>
           Cancel
         </SecondaryButton>
         <PrimaryButton type="submit" disabled={processing}>
           Create Column
         </PrimaryButton>
-      </section>
+      </div>
     </form>
   );
 }

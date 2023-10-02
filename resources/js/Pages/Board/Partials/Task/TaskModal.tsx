@@ -62,7 +62,7 @@ export default function TaskModal({
   const handleDetachTag = (tag: TagElement) => debouncedDetach(tag);
 
   return (
-    <section className="flex flex-col p-4 space-y-3 h-auto">
+    <section className="flex flex-col p-4 space-y-3 h-auto dark:text-white">
       <div className="flex items-center mb-6">
         <TitleIcon className="h-5 w-5" />
         <TextInput
@@ -86,7 +86,7 @@ export default function TaskModal({
       <textarea
         id="description"
         name="description"
-        className="bg-transparent resize-none w-full h-32 rounded-md border-none focus:ring-0 overflow-scroll-y task-scroll"
+        className="bg-transparent resize-none w-full h-32 dark:placeholder:text-gray-300 rounded-md border-none focus:ring-0 overflow-scroll-y task-scroll"
         placeholder="Task description..."
         value={data.description}
         onChange={(e) => setData("description", e.target.value)}

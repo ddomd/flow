@@ -7,6 +7,7 @@ import Modal from "@/Components/Modal";
 import PinIcon from "@/Icons/PinIcon";
 import TrashIcon from "@/Icons/TrashIcon";
 import DeleteForm from "../Forms/DeleteForm";
+import { IconButton } from "@/Components/IconButton";
 
 export default function CardMenu({ board }: { board: BoardElement }) {
   const { modal, showModal, closeModal } = useModal();
@@ -22,7 +23,6 @@ export default function CardMenu({ board }: { board: BoardElement }) {
       },
       {
         onStart: () => {
-          console.log('debounce');
           setDisableButton(true);
         },
         onFinish: () => {
@@ -30,32 +30,28 @@ export default function CardMenu({ board }: { board: BoardElement }) {
         },
       }
     );
-  }, 600);
+  }, 200);
 
   return (
     <menu className="absolute top-3 right-3 flex space-x-2">
-      <button
+      <IconButton
         onClick={handlePinToggle}
         disabled={disableButton}
-        className={`${
-          disableButton
-            ? ""
-            : "-translate-x-[0.10rem] -translate-y-[0.10rem] shadow-slanted-xs"
-        }  p-1 border border-black rounded-full transition duration-200 ${
-          board.pinned ? "bg-amber-400" : ""
+        className={` ${
+          board.pinned ? "bg-amber-400 dark:bg-violet-600" : ""
         }`}
       >
-        <PinIcon className="h-4 w-4" />
-      </button>
-      <button
+        <PinIcon className="h-4 w-4 dark:text-white" />
+      </IconButton>
+      <IconButton
         onClick={showModal}
-        className="-translate-x-[0.10rem] -translate-y-[0.10rem] bg-red-400 border border-black rounded-full p-1 shadow-slanted-xs"
+        className="bg-red-400 dark:bg-rose-500"
         disabled={disableButton}
       >
-        <TrashIcon className="h-4 w-4" />
-      </button>
+        <TrashIcon className="h-4 w-4 dark:text-white" />
+      </IconButton>
       <Modal show={modal} closeModal={closeModal}>
-        <DeleteForm id={board.id} name="board.name" model="board" closeForm={closeModal} />
+        <DeleteForm id={board.id} name={board.name} model="board" closeForm={closeModal} />
       </Modal>
     </menu>
   );

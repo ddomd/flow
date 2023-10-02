@@ -110,7 +110,7 @@ export default function AddTaskForm({
   };
 
   return (
-    <form onSubmit={submitHandler} className="p-4 space-y-3">
+    <form onSubmit={submitHandler} className="p-4 space-y-3 dark:text-white">
       <h2 className="text-center text-xl font-bold">New Task</h2>
       <div className="flex items-center gap-x-2">
         <TitleIcon className="h-5 w-5" />
@@ -136,7 +136,7 @@ export default function AddTaskForm({
       <textarea
         id="description"
         name="description"
-        className="w-full bg-transparent rounded-md h-24 border-solid border border-black hover:border-amber-500 focus:border-amber-500 focus:ring-0 resize-none"
+        className="w-full bg-transparent rounded-md h-24 border-solid border border-black dark:border-white dark:placeholder:text-gray-300 hover:border-amber-500 hover:dark:border-violet-600 focus:border-amber-500 focus:dark:border-violet-600 focus:ring-0 resize-none"
         placeholder="Task description..."
         value={data.description}
         onChange={(e) => setData("description", e.target.value)}

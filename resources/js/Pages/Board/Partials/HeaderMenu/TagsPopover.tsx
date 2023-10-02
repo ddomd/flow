@@ -19,7 +19,7 @@ export default function TagsPopover({
 
   return (
     <Popover className="relative">
-      <Popover.Button className="text-xs uppercase tracking-wider rounded-md h-7 px-1 w-auto select-none border shadow-slanted-xs transition duration-150 -translate-x-[0.15rem] -translate-y-[0.15rem] hover:translate-y-0 hover:translate-x-0 hover:shadow-none border-black focus:ring-0 active:ring-0 ">
+      <Popover.Button className="text-xs uppercase font-bold tracking-wider dark:text-white rounded-md h-7 px-1 w-auto select-none border dark:border-white shadow-slanted-xs dark:shadow-white transition duration-150 -translate-x-[0.15rem] -translate-y-[0.15rem] hover:translate-y-0 hover:translate-x-0 hover:shadow-none border-black focus:ring-0 active:ring-0 ">
         tags
       </Popover.Button>
       <Transition
@@ -35,7 +35,7 @@ export default function TagsPopover({
           <Container className="p-3 w-48">
             <div className="mt-2 h-16 w-full">
               <Popover className="relative">
-                <Popover.Button className="w-full py-1 uppercase text-xs border border-dashed border-black rounded-md">
+                <Popover.Button className="w-full py-1 uppercase text-xs font-bold dark:text-white border border-dashed border-black dark:border-white rounded-md">
                   + new tag
                 </Popover.Button>
                 <Transition
@@ -58,13 +58,13 @@ export default function TagsPopover({
               </Popover>
               <button
                 type="button"
-                className="w-full py-1 uppercase text-xs border border-dashed border-black rounded-md"
+                className="w-full py-1 uppercase text-xs font-bold dark:text-white border border-dashed border-black dark:border-white rounded-md"
                 onClick={() => clearFilter()}
               >
                 clear filter
               </button>
             </div>
-            <div className="mt-1 mb-3 flex items-center gap-x-1">
+            <div className="mt-1 mb-3 flex items-center gap-x-1 dark:text-white">
               <FunnelIcon className="w-4 h-4" />
               <h3 className="text-sm">Filter tasks by tag</h3>
             </div>
@@ -79,10 +79,10 @@ export default function TagsPopover({
                     className=""
                     onClick={() => getFilter(tag.name)}
                   >
-                    <FunnelIcon className="h-4 w-4" />
+                    <FunnelIcon className="h-4 w-4 dark:text-white" />
                   </button>
                   <span
-                    className={`inline-flex justify-center items-center w-full py-1 ${tag.color} rounded-md border border-black text-xs tracking-wide font-medium capitalize`}
+                    className={`inline-flex justify-center items-center w-full py-1 ${tag.color} rounded-md border border-black dark:border-white text-xs tracking-wide font-bold capitalize dark:text-white`}
                   >
                     {tag.name}
                   </span>
@@ -91,7 +91,7 @@ export default function TagsPopover({
                     method="delete"
                     href={route("tags.delete", { tag: tag.id })}
                   >
-                    <TrashIcon className="h-4 w-4" />
+                    <TrashIcon className="h-4 w-4 dark:text-white" />
                   </Link>
                 </div>
               ))}

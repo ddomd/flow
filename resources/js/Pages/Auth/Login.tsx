@@ -41,7 +41,7 @@ export default function Login({
           {status}
         </div>
       )}
-      <form onSubmit={submit} className="mt-3">
+      <form onSubmit={submit} className="mt-3 dark:text-white">
         <div>
           <InputLabel htmlFor="email" value="Email" />
 
@@ -54,6 +54,7 @@ export default function Login({
             autoComplete="username"
             isFocused={true}
             onChange={(e) => setData("email", e.target.value)}
+            placeholder="Email"
           />
 
           <InputError message={errors.email} className="mt-2" />
@@ -70,6 +71,7 @@ export default function Login({
             className="mt-1 block w-full"
             autoComplete="current-password"
             onChange={(e) => setData("password", e.target.value)}
+            placeholder="Password"
           />
 
           <InputError message={errors.password} className="mt-2" />
@@ -90,7 +92,7 @@ export default function Login({
           {canResetPassword && (
             <Link
               href={route("password.request")}
-              className="underline text-sm text-black hover:text-amber-400 focus:outline-none "
+              className="underline text-sm hover:text-amber-400 hover:dark:text-violet-600 focus:outline-none "
             >
               Forgot your password?
             </Link>
@@ -104,9 +106,9 @@ export default function Login({
           New user? You can register an account{" "}
           <Link
             href={route("register")}
-            className="underline hover:text-amber-400"
+            className="underline hover:text-amber-400 hover:dark:text-violet-600"
           >
-             here.
+            here.
           </Link>
         </p>
       </form>

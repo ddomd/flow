@@ -5,6 +5,7 @@ import { NotifyContext } from "@/context/NotifyContext";
 import Modal from "@/Components/Modal";
 import TrashIcon from "@/Icons/TrashIcon";
 import DeleteForm from "../Forms/DeleteForm";
+import { IconButton } from "@/Components/IconButton";
 
 export default function ColumnHeader({
   name,
@@ -59,7 +60,7 @@ export default function ColumnHeader({
     <div className="px-3 w-full flex items-center justify-between">
       <div className="flex items-center space-x-2">
         <div
-          className={`shrink-0 inline-flex items-center justify-center h-7 w-7 font-bold text-sm border border-black ${color} rounded-lg`}
+          className={`shrink-0 inline-flex items-center justify-center h-7 w-7 font-bold text-sm border border-black dark:border-white ${color} rounded-full`}
         >
           {length}
         </div>
@@ -68,7 +69,7 @@ export default function ColumnHeader({
             id="column-name"
             name="column-name"
             value={data.name}
-            className="h-6 p-0 bg-transparent font-bold tracking-wider focus:border-none focus:ring-0"
+            className="h-6 p-0 bg-transparent dark:text-white font-bold tracking-wider focus:border-none focus:ring-0"
             onChange={(e) => setData("name", e.target.value)}
             onBlur={blurSubmit}
             onKeyDown={enterSubmit}
@@ -77,7 +78,7 @@ export default function ColumnHeader({
         ) : (
           <button
             type="button"
-            className="w-[90%] tracking-wider font-semibold truncate"
+            className="w-[90%] dark:text-white tracking-wider font-bold truncate"
             onClick={toggleEditMode}
             disabled={processing}
           >
@@ -85,13 +86,13 @@ export default function ColumnHeader({
           </button>
         )}
       </div>
-      <button
-        className="p-1 border border-black rounded-full shadow-slanted-sm bg-red-400"
+      <IconButton
+        className="bg-red-400 dark:bg-rose-500"
         onClick={showModal}
         disabled={processing}
       >
-        <TrashIcon className="h-4 w-4" />
-      </button>
+        <TrashIcon className="h-4 w-4 dark:text-white" />
+      </IconButton>
       <Modal show={modal} closeModal={closeModal}>
         <DeleteForm id={id} name={name} model="column" closeForm={closeModal} />
       </Modal>

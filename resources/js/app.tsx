@@ -17,10 +17,12 @@ createInertiaApp({
       `./Pages/${name}.tsx`,
       import.meta.glob("./Pages/**/*.tsx")
     )) as any;
-    if(name.startsWith("Board/") || name.startsWith("Profile/") || name === "Dashboard")
-      page.default.layout =
-        ((page: any) => <Authenticated children={page} />);
-    
+    if (
+      name.startsWith("Board/") ||
+      name.startsWith("Profile/") ||
+      name === "Dashboard"
+    )
+      page.default.layout = (page: any) => <Authenticated children={page} />;
 
     return page;
   },
@@ -28,12 +30,12 @@ createInertiaApp({
     const root = createRoot(el);
 
     root.render(
-    <NotifyProvider>
-      <App {...props} />
-    </NotifyProvider>
+      <NotifyProvider>
+        <App {...props} />
+      </NotifyProvider>
     );
   },
   progress: {
-    color: "#4B5563",
+    color: "#000000",
   },
 });

@@ -84,17 +84,17 @@ export default function DeleteForm({
   const handleDelete = () => debouncedRequest();
 
   return (
-    <div className="p-3">
+    <div className="p-3 dark:text-white">
       <h2>
-        Are you sure you want to delete <strong>{name}</strong>?
+        Are you sure you want to delete <strong className="text-rose-500">{name}</strong>?
       </h2>
       <h3 className="mt-3 text-sm">
         {` Once deleted all data present on the ${model} will be permanently lost.`}
       </h3>
       <div className="mt-4 flex space-x-2 justify-end">
-        <SecondaryButton onClick={closeForm}>Close</SecondaryButton>
+        <SecondaryButton onClick={closeForm}>close</SecondaryButton>
         <DangerButton onClick={handleDelete} disabled={disableButton}>
-          Delete Board
+          {`delete ${model}`}
         </DangerButton>
       </div>
     </div>

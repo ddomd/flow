@@ -27,14 +27,14 @@ export default function DashboardMenu({
   return (
     <HeaderMenu>
       <div className="flex items-center space-x-2">
-        <SearchIcon className="h-5 w-5 text-black" />
+        <SearchIcon className="h-5 w-5 text-black dark:text-white" />
         <input
           id="search"
           name="search"
           type="text"
           value={search}
           onChange={handleSearch}
-          className="h-7 bg-transparent border-none text-black focus:ring-0"
+          className="h-7 bg-transparent border-none text-black dark:text-white dark:placeholder:text-gray-300 focus:ring-0"
           placeholder="Search..."
         />
       </div>

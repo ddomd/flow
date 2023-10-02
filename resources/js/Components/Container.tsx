@@ -7,7 +7,7 @@ export default function Container({
   return (
     <section
       className={
-        `bg-orange-100 shadow-slanted-sm border-2 border-black rounded-md ` + className
+        `bg-orange-100 dark:bg-zinc-900 shadow-slanted-sm dark:shadow-white border-2 border-black dark:border-white rounded-md ` + className
       }
     >
       {children}

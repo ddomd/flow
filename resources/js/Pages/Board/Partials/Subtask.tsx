@@ -65,46 +65,49 @@ export default function Subtask({ subtask }: { subtask: SubtaskElement }) {
   };
 
   return (
-    <div className="flex items-center justify-between w-full">
-      <div className="flex items-center space-x-3 w-3/4">
-        <button
-          type="button"
-          className="text-2xl text-rose-600 font-bold"
-          onClick={handleDelete}
-          disabled={disableButton}
-        >
-          &ndash;
-        </button>
-        {edit ? (
-          <input
-            id={subtask.id + "-name"}
-            name={subtask.name}
-            value={data.name}
-            className="w-full bg-transparent border-none font-medium tracking-wide m-0 p-0 focus:ring-0 focus:border-black"
-            onChange={(e) => setData("name", e.target.value)}
-            onBlur={handleBlur}
-            onKeyDown={handleKeyDown}
-            autoFocus
-          />
-        ) : (
+    <>
+      <div className="flex items-center justify-between w-full">
+        <div className="flex items-center space-x-3 w-[90%]">
           <button
             type="button"
-            className="w-full text-medium tracking-wide font-medium select-none"
-            onClick={toggleEditMode}
+            className="text-2xl text-rose-600 font-bold"
+            onClick={handleDelete}
             disabled={disableButton}
           >
-            {subtask.name}
+            &ndash;
           </button>
-        )}
-        <InputError message={errors.name} />
+          {edit ? (
+            <input
+              id={subtask.id + "-name"}
+              name={subtask.name}
+              value={data.name}
+              className="h-7 px-0 mx-0 w-full bg-transparent border-none font-medium tracking-wide focus:ring-0 focus:border-black select-text"
+              onChange={(e) => setData("name", e.target.value)}
+              onBlur={handleBlur}
+              onKeyDown={handleKeyDown}
+              autoFocus
+            />
+          ) : (
+            <button
+              type="button"
+              className="px-0 mx-0 text-left w-full text-medium tracking-wide font-medium select-none overflow-x-scroll column-scroll"
+              onClick={toggleEditMode}
+              disabled={disableButton}
+            >
+              {subtask.name}
+            </button>
+          )}
+        </div>
+
+        <button type="button" onClick={handleDone} disabled={disableButton}>
+          <CheckIcon
+            className={`h-7 w-7 ${
+              subtask.done ? "text-green-500" : "text-black dark:text-white"
+            }`}
+          />
+        </button>
       </div>
-      <button type="button" onClick={handleDone} disabled={disableButton}>
-        <CheckIcon
-          className={`h-7 w-7 ${
-            subtask.done ? "text-green-500" : "text-black"
-          }`}
-        />
-      </button>
-    </div>
+      <InputError message={errors.name} />
+    </>
   );
 }

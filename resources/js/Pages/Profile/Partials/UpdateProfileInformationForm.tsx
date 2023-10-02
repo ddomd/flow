@@ -22,7 +22,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
     };
 
     return (
-        <section className={className}>
+        <section className={"dark:text-white " + className}>
             <header>
                 <h2 className="text-lg font-semibold">Profile Information</h2>
 

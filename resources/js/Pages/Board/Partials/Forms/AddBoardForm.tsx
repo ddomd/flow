@@ -50,7 +50,7 @@ export default function AddBoardForm({
   };
 
   return (
-    <form onSubmit={submitHandler} className="p-4 ">
+    <form onSubmit={submitHandler} className="p-4 dark: text-white">
       <h2 className="text-center text-xl font-semibold">New Board</h2>
       <InputLabel htmlFor="name" value="Name" className="mt-3" />
       <TextInput
@@ -68,6 +68,7 @@ export default function AddBoardForm({
         <InputLabel htmlFor="pinned" value="Pin board?" />
         <div>
           <input
+            id="pinned"
             name="pinned"
             type="checkbox"
             checked={data.pinned}
@@ -75,12 +76,12 @@ export default function AddBoardForm({
             className="absolute opacity-0 h-8 w-8 cursor-pointer"
           />
           <div
-            className={`p-1 shadow-slanted-xs rounded-full border border-black ${
-              data.pinned ? "bg-amber-400" : ""
+            className={`p-1 shadow-slanted-xs dark:shadow-white hover:shadow-none transition-shadow duration-150 rounded-full border border-black dark:border-white ${
+              data.pinned ? "bg-amber-400 dark:bg-violet-600" : ""
             }`}
             aria-hidden
           >
-            <PinIcon className="h-5 w-5" />
+            <PinIcon className="h-5 w-5 dark:text-white" />
           </div>
         </div>
       </section>
