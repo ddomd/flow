@@ -55,7 +55,7 @@ export default function Notification({
           status === "success" ? "bg-green-400" : "bg-red-400"
         } w-3 rounded-l-md border-r border-black dark:border-white`}
       ></div>
-      <p className="p-2 sm:text-base text-sm tracking-wide w-full">{message}</p>
+      <p className="p-2 sm:text-base text-sm tracking-wide w-full dark:text-white">{message}</p>
     </Transition>
   );
 }
