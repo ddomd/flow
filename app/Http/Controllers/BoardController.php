@@ -13,14 +13,9 @@ class BoardController extends Controller
         $boards = cache('dashboard_boards');
 
         if (!$boards) {
-            // If not found in cache, query the database to fetch the boards
             $boards = auth()->user()->boards;
-
-            // Cache the boards data with a specific key for a defined TTL (e.g., 60 minutes)
             cache(['dashboard_boards' => $boards], 60);
         }
-
-        $boards = auth()->user()->boards;
 
         return Inertia::render('Dashboard', [
             'boards' => $boards,
@@ -32,11 +27,19 @@ class BoardController extends Controller
         $this->authorize('show', $board);
 
         $board->load([
-            'tags',
-            'columns.tasks' => fn ($query) =>
-            $query->orderBy('position'),
-            'columns.tasks.tags',
-            'columns.tasks.subtasks',
+            'tags' => function ($query) {
+                $query->select(['tags.id', 'tags.name', 'tags.color']);
+            },
+            'columns.tasks' => function ($query) {
+                $query->orderBy('position')
+                    ->select(['tasks.id', 'tasks.board_id', 'tasks.column_id', 'tasks.title', 'tasks.description', 'tasks.position']);
+            },
+            'columns.tasks.tags' => function ($query) {
+                $query->select(['tags.id', 'tags.name', 'tags.color']);
+            },
+            'columns.tasks.subtasks' => function ($query) {
+                $query->select(['subtasks.id', 'subtasks.task_id', 'subtasks.name', 'subtasks.done']);
+            },
         ]);
 
         return Inertia::render('Board/Board', [

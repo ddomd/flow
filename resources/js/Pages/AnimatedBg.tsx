@@ -1,18 +1,19 @@
 import { useEffect, useState } from "react";
 
 export default function AnimatedBg() {
-  const [colors, setColors] = useState(["#FCB165", "#65B0FC"]);
+  const [colors, setColors] = useState<[string, string]>(["#FCB165", "#65B0FC"]);
+
+  const bodyClassList = document.body.classList;
+  
+  const handleBodyClassChange = () => {
+    if (bodyClassList.contains("dark")) {
+      setColors(["#FFA101", "#7F00FF", ]);
+    } else {
+      setColors(["#FCB165", "#65B0FC"]);
+    }
+  };
 
   useEffect(() => {
-    const bodyClassList = document.body.classList;
-
-    const handleBodyClassChange = () => {
-      if (bodyClassList.contains("dark")) {
-        setColors(["#FFA101", "#7F00FF", ]);
-      } else {
-        setColors(["#FCB165", "#65B0FC"]);
-      }
-    };
 
     // Listen for changes to the body class list
     const bodyClassObserver = new MutationObserver(handleBodyClassChange);

@@ -1,12 +1,13 @@
-import FunnelIcon from "@/Icons/FunnelIcon";
-import { TagElement } from "@/types/board";
-import { Popover, Transition } from "@headlessui/react";
 import { Fragment, useContext } from "react";
-import AddTagForm from "../Forms/AddTagForm";
+import { Link } from "@inertiajs/react";
+import { Popover, Transition } from "@headlessui/react";
+import { TagElement } from "@/types/board";
 import { FilterContext } from "@/context/FilterContext";
 import Container from "@/Components/Container";
 import TrashIcon from "@/Icons/TrashIcon";
-import { Link } from "@inertiajs/react";
+import FunnelIcon from "@/Icons/FunnelIcon";
+import AddTagForm from "../Forms/AddTagForm";
+
 
 export default function TagsPopover({
   id,
@@ -19,7 +20,10 @@ export default function TagsPopover({
 
   return (
     <Popover className="relative">
-      <Popover.Button className="text-xs uppercase font-bold tracking-wider dark:text-white rounded-md h-7 px-1 w-auto select-none border dark:border-white shadow-slanted-xs dark:shadow-white transition duration-150 -translate-x-[0.15rem] -translate-y-[0.15rem] hover:translate-y-0 hover:translate-x-0 hover:shadow-none border-black focus:ring-0 active:ring-0 ">
+      <Popover.Button
+        aria-label="open tags menu"
+        className="text-xs uppercase font-bold tracking-wider dark:text-white rounded-md h-7 px-1 w-auto select-none border dark:border-white shadow-slanted-xs dark:shadow-white transition duration-150 -translate-x-[0.15rem] -translate-y-[0.15rem] hover:translate-y-0 hover:translate-x-0 hover:shadow-none border-black focus:ring-0 active:ring-0 "
+      >
         tags
       </Popover.Button>
       <Transition
@@ -35,7 +39,10 @@ export default function TagsPopover({
           <Container className="p-3 w-48">
             <div className="mt-2 h-16 w-full">
               <Popover className="relative">
-                <Popover.Button className="w-full py-1 uppercase text-xs font-bold dark:text-white border border-dashed border-black dark:border-white rounded-md">
+                <Popover.Button
+                  aria-label="add tag button"
+                  className="w-full py-1 uppercase text-xs font-bold dark:text-white border border-dashed border-black dark:border-white rounded-md"
+                >
                   + new tag
                 </Popover.Button>
                 <Transition
@@ -57,6 +64,7 @@ export default function TagsPopover({
                 </Transition>
               </Popover>
               <button
+                aria-label="clear tag filter"
                 type="button"
                 className="w-full py-1 uppercase text-xs font-bold dark:text-white border border-dashed border-black dark:border-white rounded-md"
                 onClick={() => clearFilter()}
@@ -75,6 +83,7 @@ export default function TagsPopover({
                   className="flex justify-evenly gap-x-2 items-center"
                 >
                   <button
+                    aria-label={`set ${tag.name} tag filter`}
                     type="button"
                     className=""
                     onClick={() => getFilter(tag.name)}
@@ -87,6 +96,7 @@ export default function TagsPopover({
                     {tag.name}
                   </span>
                   <Link
+                    aria-label={`delete ${tag.name} tag button`}
                     as="button"
                     method="delete"
                     href={route("tags.delete", { tag: tag.id })}

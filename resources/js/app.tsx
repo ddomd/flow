@@ -36,6 +36,6 @@ createInertiaApp({
     );
   },
   progress: {
-    color: document.body.classList.contains("dark") ? "#ffffff" : "#000000",
+    color: "#ffffff",
   },
 });

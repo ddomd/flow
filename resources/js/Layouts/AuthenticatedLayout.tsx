@@ -1,25 +1,24 @@
-import { useState, useEffect, PropsWithChildren, useContext } from "react";
+import {
+  useState,
+  PropsWithChildren,
+  useContext,
+  useLayoutEffect,
+} from "react";
 import { Link } from "@inertiajs/react";
 import { Transition } from "@headlessui/react";
 import { NotifyContext } from "@/context/NotifyContext";
 import BurgerIcon from "@/Icons/BurgerIcon";
 import NavLogo from "@/Icons/NavLogo";
 import Notification from "@/Components/Notification";
-import LeftArrowIcon from "@/Icons/LeftArrowIcon";
 import ThemeSwitcher from "@/Components/ThemeSwitcher";
-import TitleIcon from "@/Icons/TitleIcon";
-import UserIcon from "@/Icons/UserIcon";
-import LogoutIcon from "@/Icons/LogoutIcon";
+import Sidebar from "./Partials/Sidebar";
 
 export default function Authenticated({ children }: PropsWithChildren) {
   const [show, setShow] = useState(false);
   const [sidebar, setSidebar] = useState(false);
 
-  useEffect(() => {
-    //run animation on page load
+  useLayoutEffect(() => {
     setShow(true);
-
-    //reset animation on page close
   }, []);
 
   const toggleSidebar = () => {
@@ -42,7 +41,7 @@ export default function Authenticated({ children }: PropsWithChildren) {
               enterFrom="opacity-0 -translate-x-1/3"
               enterTo="opacity-100"
             >
-              <Link href="/">
+              <Link aria-label="link to welcome page" href="/">
                 <NavLogo className="sm:-translate-y-1 h-5 dark:text-white" />
               </Link>
             </Transition.Child>
@@ -96,74 +95,7 @@ export default function Authenticated({ children }: PropsWithChildren) {
               </ul>
             </Transition.Child>
 
-            {sidebar && (
-              <>
-                <Transition.Child
-                  as="aside"
-                  enter="transform transition duration-100 ease-in"
-                  enterFrom="opacity-0 translate-x-2/3"
-                  enterTo="opacity-100"
-                  className="fixed z-50 h-screen flex flex-col space-y-4 bg-orange-100 dark:bg-zinc-900 w-1/2 right-0 top-0"
-                >
-                  <button
-                    type="button"
-                    onClick={toggleSidebar}
-                    className="h-10 w-16 px-2 top-0 -left-10 absolute bg-orange-100 dark:bg-zinc-900 rounded-md"
-                  >
-                    <LeftArrowIcon className="rotate-180 h-7 w-7" />
-                  </button>
-
-                  <NavLogo className="ml-4 h-32 w-32" />
-                  <nav className="">
-                    <ul className="h-full flex flex-col space-y-3 ml-4 tracking-wide font-medium">
-                      <li>
-                        <Link
-                          onClick={toggleSidebar}
-                          href={route("boards")}
-                          className="hover:text-amber-500 dark:hover:text-violet-600"
-                        >
-                          <div className="flex items-center gap-x-3">
-                            <TitleIcon className="h-5 w-5" />
-                            <span>Boards</span>
-                          </div>
-                        </Link>
-                      </li>
-                      <li>
-                        <Link
-                          onClick={toggleSidebar}
-                          href={route("profile.edit")}
-                          className="hover:text-amber-500 dark:hover:text-violet-600"
-                        >
-                          <div className="flex items-center gap-x-3">
-                            <UserIcon className="h-5 w-5" />
-                            <span>Profile</span>
-                          </div>
-                        </Link>
-                      </li>
-
-                      <li>
-                        <Link
-                          onClick={toggleSidebar}
-                          href={route("logout")}
-                          method="post"
-                          as="button"
-                          className="hover:text-amber-500 dark:hover:text-violet-600"
-                        >
-                          <div className="flex items-center gap-x-3">
-                            <LogoutIcon className="h-5 w-5" />
-                            <span>Logout</span>
-                          </div>
-                        </Link>
-                      </li>
-                    </ul>
-                  </nav>
-                </Transition.Child>
-                <div
-                  className="z-30 fixed top-0 left-0 h-screen w-screen bg-zinc-900/50"
-                  onClick={toggleSidebar}
-                ></div>
-              </>
-            )}
+            {sidebar && <Sidebar toggleSidebar={toggleSidebar} />}
           </Transition>
         </header>
         <main className="w-screen h-full overflow-hidden bg-orange-100 dark:bg-zinc-900">

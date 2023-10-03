@@ -45,6 +45,7 @@ export default function BoardCard({ board }: { board: BoardElement }) {
     <li className="relative flex w-full border-t border-black dark:border-white">
       <div className="flex items-center p-3 space-x-3 w-full">
         <Link
+          aria-label={`go to ${board.name} button`}
           as="button"
           href={route("boards.show", { board: board.id })}
           className="rounded-lg sm:h-20 sm:w-24 h-12 w-16 bg-blue-400 dark:bg-yellow-500 border border-black"
@@ -60,6 +61,7 @@ export default function BoardCard({ board }: { board: BoardElement }) {
               onBlur={blurSubmit}
               onKeyDown={enterSubmit}
               autoFocus
+              aria-label={`${board.name} board input`}
             />
           ) : (
             <button
@@ -67,6 +69,7 @@ export default function BoardCard({ board }: { board: BoardElement }) {
               onClick={toggleEditMode}
               className="inline-flex items-center h-5 p-0 w-full sm:text-base text-sm text-left font-medium tracking-wide truncate dark:text-white"
               disabled={processing}
+              aria-label={`toggle ${board.name} board input`}
             >
               {board.name}
             </button>

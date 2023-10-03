@@ -5,6 +5,7 @@ import { TagElement, TaskElement } from "@/types/board";
 import Modal from "@/Components/Modal";
 import TaskModal from "./TaskModal";
 import Tag from "../Tag";
+import { useCallback } from "react";
 
 export default function Task({
   active = false,
@@ -41,9 +42,10 @@ export default function Task({
   };
 
   const subtasks = task.subtasks.length;
-  const completedSubtasks = task.subtasks.filter(
-    (subtask) => subtask.done
-  ).length;
+  const completedSubtasks = useCallback(
+    () => task.subtasks.filter((subtask) => subtask.done).length,
+    [task.subtasks]
+  );
 
   if (isDragging) {
     return (
@@ -57,12 +59,13 @@ export default function Task({
 
   return (
     <>
-      <div
+      <button
+        aria-label={`open or drag ${task.title} task`}
         ref={setNodeRef}
         style={style}
         {...attributes}
         {...listeners}
-        className={`${
+        className={`text-left m-0 ${
           active ? "shadow-slanted-sm" : ""
         } bg-orange-100 dark:bg-zinc-900 shrink-0 p-3 w-full h-38 border-2 ${
           disabled
@@ -79,19 +82,17 @@ export default function Task({
         </p>
         <p className="mt-4 text-xs tracking-wide dark:text-white">
           {subtasks > 0
-            ? `Tasks completed ${completedSubtasks} of ${subtasks}`
+            ? `Tasks completed ${completedSubtasks()} of ${subtasks}`
             : "No tasks left to do"}
         </p>
         <ul className="mt-4 flex space-x-3 overflow-x-scroll">
           {task.tags.map((tag) => (
-            <li
-              key={tag.id}
-            >
-              <Tag tag={tag} type="show" size="xs"/>
+            <li key={tag.id}>
+              <Tag tag={tag} type="show" size="xs" />
             </li>
           ))}
         </ul>
-      </div>
+      </button>
       <Modal show={modal} closeModal={closeModal}>
         <TaskModal task={task} closeForm={closeModal} boardTags={boardTags} />
       </Modal>

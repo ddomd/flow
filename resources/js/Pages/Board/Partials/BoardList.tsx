@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { BoardElement } from "@/types/board";
 import BoardCard from "./BoardCard/BoardCard";
 import Container from "@/Components/Container";
@@ -11,19 +12,24 @@ export default function BoardList({
   search: string;
   className: string;
 }) {
-  const filteredBoards = boards.filter((board) =>
-    board.name.toLowerCase().includes(search)
+  const filteredBoards = useMemo(
+    () => boards.filter((board) => board.name.toLowerCase().includes(search)),
+    [boards, search]
   );
 
   return (
     <Container
       className={
-        "transition-[height] duration-50 w-full overflow-hidden " +
-        className
+        "transition-[height] duration-50 w-full overflow-hidden " + className
       }
     >
-      <h2 className="h-14 pt-3 p-3 w-full font-bold tracking-wide dark:text-white">My Boards</h2>
-      <ul className="task-scroll w-full h-[85%] flex flex-col items-center overflow-y-scroll touch-pan-y">
+      <h2 className="h-14 pt-3 p-3 w-full font-bold tracking-wide dark:text-white">
+        My Boards
+      </h2>
+      <ul
+        aria-label="Board list"
+        className="task-scroll w-full h-[85%] flex flex-col items-center overflow-y-scroll touch-pan-y"
+      >
         {filteredBoards.map((board) => (
           <BoardCard key={board.id} board={board} />
         ))}

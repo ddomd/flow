@@ -40,8 +40,11 @@ export default function AttachTagsPopover({
 
   return (
     <Popover className="relative w-full">
-      <Popover.Button className="w-full bg-transparent text-xs text-center font-bold dark:text-white uppercase tracking-wide py-1 px-2 rounded-md border border-dashed border-black dark:border-white">
-        + Add Tag
+      <Popover.Button
+        aria-label="open tags to attach"
+        className="w-full bg-transparent text-xs text-center font-bold dark:text-white uppercase tracking-wide py-1 px-2 rounded-md border border-dashed border-black dark:border-white"
+      >
+        + Attach Tag
       </Popover.Button>
       <Transition
         as={Fragment}

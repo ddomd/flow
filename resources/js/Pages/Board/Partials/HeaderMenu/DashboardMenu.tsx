@@ -1,10 +1,10 @@
 import SearchIcon from "@/Icons/SearchIcon";
 import HeaderMenu from "./HeaderMenu";
+import { ChangeEvent, ChangeEventHandler, useState } from "react";
+import { useModal } from "@/hooks/useModal";
 import AddButton from "@/Components/AddButton";
 import Modal from "@/Components/Modal";
 import AddBoardForm from "../Forms/AddBoardForm";
-import { ChangeEvent, ChangeEventHandler, useState } from "react";
-import { useModal } from "@/hooks/useModal";
 
 export default function DashboardMenu({
   currentBoards,
@@ -17,7 +17,9 @@ export default function DashboardMenu({
 
   const { modal, showModal, closeModal } = useModal();
 
-  const handleSearch: ChangeEventHandler = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleSearch: ChangeEventHandler = (
+    e: ChangeEvent<HTMLInputElement>
+  ) => {
     const searchTerm = e.target.value.toLowerCase();
 
     setSearch(searchTerm);
@@ -36,9 +38,14 @@ export default function DashboardMenu({
           onChange={handleSearch}
           className="h-7 bg-transparent border-none text-black dark:text-white dark:placeholder:text-gray-300 focus:ring-0"
           placeholder="Search..."
+          aria-label="Search boards input"
         />
       </div>
-      <AddButton onClick={showModal} className="shrink-0" />
+      <AddButton
+        aria-label="Add board button"
+        onClick={showModal}
+        className="shrink-0"
+      />
       <Modal show={modal} closeModal={closeModal}>
         <AddBoardForm closeForm={closeModal} currentBoards={currentBoards} />
       </Modal>

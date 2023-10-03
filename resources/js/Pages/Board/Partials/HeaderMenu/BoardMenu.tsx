@@ -14,7 +14,7 @@ export default function BoardMenu({ board }: { board: BoardElement }) {
   return (
     <HeaderMenu>
       <div className="shrink-0 flex items-center gap-x-2 w-[70%]">
-        <Link href={route("boards")}>
+        <Link aria-label="Back to boards button" href={route("boards")}>
           <LeftArrowIcon className="h-5 w-5 text-black dark:text-white" />
         </Link>
         <span className="px-1 text-lg uppercase tracking-wide font-bold dark:text-white truncate">
@@ -23,11 +23,15 @@ export default function BoardMenu({ board }: { board: BoardElement }) {
       </div>
       <div className="flex gap-x-3 items-center">
         <TagsPopover id={board.id} tags={board.tags} />
-        <AddButton onClick={showModal} />
+        <AddButton aria-label="Add column button" onClick={showModal} />
       </div>
 
       <Modal show={modal} closeModal={closeModal}>
-        <AddColumnForm boardId={board.id} columnLength={board.columns.length} closeForm={closeModal} />
+        <AddColumnForm
+          boardId={board.id}
+          columnLength={board.columns.length}
+          closeForm={closeModal}
+        />
       </Modal>
     </HeaderMenu>
   );

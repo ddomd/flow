@@ -2,7 +2,7 @@ import { Link, Head } from "@inertiajs/react";
 import { PageProps } from "@/types";
 import ApplicationLogo from "@/Icons/ApplicationLogo";
 import { Transition } from "@headlessui/react";
-import { useState, useEffect } from "react";
+import { useState,  useLayoutEffect } from "react";
 import PrimaryButton from "@/Components/PrimaryButton";
 import AnimatedBg from "./AnimatedBg";
 import ThemeSwitcher from "@/Components/ThemeSwitcher";
@@ -10,8 +10,7 @@ import ThemeSwitcher from "@/Components/ThemeSwitcher";
 export default function Welcome({ auth }: PageProps) {
   const [show, setShow] = useState(false);
 
-  useEffect(() => {
-    //run animation on page load
+  useLayoutEffect(() => {
     setShow(true);
   }, []);
 

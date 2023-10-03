@@ -74,6 +74,7 @@ export default function ColumnHeader({
             onBlur={blurSubmit}
             onKeyDown={enterSubmit}
             autoFocus
+            aria-label={`edit ${name} column input`}
           />
         ) : (
           <button
@@ -81,6 +82,7 @@ export default function ColumnHeader({
             className="w-[90%] dark:text-white tracking-wider font-bold truncate"
             onClick={toggleEditMode}
             disabled={processing}
+            aria-label={`edit ${name} column toggle`}
           >
             {name}
           </button>
@@ -90,6 +92,7 @@ export default function ColumnHeader({
         className="bg-red-400 dark:bg-rose-500"
         onClick={showModal}
         disabled={processing}
+        aria-label={`delete ${name} column button`}
       >
         <TrashIcon className="h-4 w-4 dark:text-white" />
       </IconButton>

@@ -1,14 +1,14 @@
-import { ColumnElement, TagElement } from "@/types/board";
+import { memo, useContext, useMemo } from "react";
 import { useDroppable } from "@dnd-kit/core";
 import { SortableContext } from "@dnd-kit/sortable";
+import { useModal } from "@/hooks/useModal";
+import { FilterContext } from "@/context/FilterContext";
+import { ColumnElement, TagElement } from "@/types/board";
 import Task from "../Task/Task";
 import Modal from "@/Components/Modal";
 import AddTaskForm from "@/Pages/Board/Partials/Forms/AddTaskForm";
-import { useModal } from "@/hooks/useModal";
 import ColumnHeader from "./ColumnHeader";
 import SecondaryButton from "@/Components/SecondaryButton";
-import { memo, useContext } from "react";
-import { FilterContext } from "@/context/FilterContext";
 
 function Column({
   column,
@@ -32,12 +32,14 @@ function Column({
 
   const { filter } = useContext(FilterContext);
 
-  const filteredTasks =
-    filter !== ""
-      ? column.tasks.filter((task) =>
-          task.tags.some((tag) => tag.name === filter)
-        )
-      : column.tasks;
+  const filteredTasks = useMemo(() => {
+    if (filter !== "") {
+      return column.tasks.filter((task) =>
+        task.tags.some((tag) => tag.name === filter)
+      );
+    }
+    return column.tasks;
+  }, [filter, column.tasks]);
 
   return (
     <div className="py-2 shrink-0 w-[18rem] flex flex-col items-center space-y-3">
@@ -49,6 +51,7 @@ function Column({
       />
 
       <div
+        aria-label="tasks column"
         ref={setNodeRef}
         className="w-full px-3 flex flex-col space-y-2 items-center h-full overflow-y-scroll task-scroll"
       >
@@ -65,7 +68,11 @@ function Column({
         </SortableContext>
       </div>
       {filter === "" ? (
-        <SecondaryButton onClick={showModal} className="w-[17rem] h-11">
+        <SecondaryButton
+          aria-label="add task button"
+          onClick={showModal}
+          className="w-[17rem] h-11"
+        >
           + New Task
         </SecondaryButton>
       ) : (
@@ -73,7 +80,12 @@ function Column({
       )}
 
       <Modal show={modal} closeModal={closeModal}>
-        <AddTaskForm closeForm={closeModal} columnId={column.id} boardId={column.board_id} boardTags={boardTags} />
+        <AddTaskForm
+          closeForm={closeModal}
+          columnId={column.id}
+          boardId={column.board_id}
+          boardTags={boardTags}
+        />
       </Modal>
     </div>
   );

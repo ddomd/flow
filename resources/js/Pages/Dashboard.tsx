@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { Head } from "@inertiajs/react";
 import { BoardElement } from "@/types/board";
 import BoardList from "@/Pages/Board/Partials/BoardList";
@@ -9,9 +9,9 @@ export default function Dashboard({ boards }: { boards: BoardElement[] }) {
   const [search, setSearch] = useState("");
   const pinnedBoards = boards.filter((board) => board.pinned);
 
-  const onSearchChange = (searchTerm: string) => {
+  const onSearchChange = useCallback((searchTerm: string) => {
     setSearch(searchTerm);
-  };
+  }, []);
 
   return (
     <>
