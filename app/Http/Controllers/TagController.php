@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Board;
 use App\Models\Tag;
 use App\Models\Task;
+use App\Models\Board;
 use App\Rules\MaxEntries;
+use Illuminate\Support\Facades\Cache;
 
 class TagController extends Controller
 {
@@ -29,6 +30,8 @@ class TagController extends Controller
 
         $tag->save();
 
+        Cache::forget("board_{$board->id}");
+
         return back();
     }
 
@@ -40,6 +43,8 @@ class TagController extends Controller
         if (!$task->tags->contains($tag->id)) {
             $tag->tasks()->attach($task->id);
         }
+
+        Cache::forget("board_{$task->board_id}");
     }
 
     public function detach(Task $task, Tag $tag)
@@ -49,7 +54,7 @@ class TagController extends Controller
 
         $tag->tasks()->detach($task->id);
 
-        return back();
+        Cache::forget("board_{$task->board_id}");
     }
 
     public function delete(Tag $tag)
@@ -58,6 +63,6 @@ class TagController extends Controller
 
         $tag->delete();
 
-        return back();
+        Cache::forget("board_{$tag->board_id}");
     }
 }

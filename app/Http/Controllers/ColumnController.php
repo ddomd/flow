@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Board;
 use App\Models\Column;
 use App\Rules\MaxEntries;
+use Illuminate\Support\Facades\Cache;
 
 class ColumnController extends Controller
 {
@@ -28,6 +29,8 @@ class ColumnController extends Controller
 
         $column->save();
 
+        Cache::forget("board_{$column->board_id}");
+
         return to_route('boards.show', $board->id);
     }
 
@@ -41,6 +44,8 @@ class ColumnController extends Controller
 
         $column->update(['name' => request('name')]);
 
+        Cache::forget("board_{$column->board_id}");
+
         return back();
     }
 
@@ -49,6 +54,8 @@ class ColumnController extends Controller
         $this->authorize('delete', $column);
 
         $column->delete();
+
+        Cache::forget("board_{$column->board_id}");
 
         return back();
     }

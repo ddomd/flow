@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Subtask;
 use App\Models\Task;
 use App\Rules\MaxEntries;
+use Illuminate\Support\Facades\Cache;
 
 class SubtaskController extends Controller
 {
@@ -27,6 +28,8 @@ class SubtaskController extends Controller
 
         $subtask->save();
 
+        Cache::forget("board_{$task->board_id}");
+
         return back();
     }
 
@@ -42,7 +45,7 @@ class SubtaskController extends Controller
             'name' => request('name'),
         ]);
 
-        return back();
+        Cache::forget("board_{$subtask->task->board_id}");
     }
 
     public function done(Subtask $subtask)
@@ -57,7 +60,7 @@ class SubtaskController extends Controller
             'done' => request('done'),
         ]);
 
-        return back();
+        Cache::forget("board_{$subtask->task->board_id}");
     }
 
     public function delete(Subtask $subtask)
@@ -66,6 +69,6 @@ class SubtaskController extends Controller
 
         $subtask->delete();
 
-        return back();
+        Cache::forget("board_{$subtask->task->board_id}");
     }
 }

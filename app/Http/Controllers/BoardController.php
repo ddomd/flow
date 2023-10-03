@@ -5,16 +5,19 @@ namespace App\Http\Controllers;
 use Inertia\Inertia;
 use App\Models\Board;
 use App\Rules\MaxEntries;
+use Illuminate\Support\Facades\Cache;
 
 class BoardController extends Controller
 {
     public function index()
     {
-        $boards = cache('dashboard_boards');
+        $boards = null;
 
-        if (!$boards) {
+        if (Cache::has('dashboard_boards')) {
+            $boards = Cache::get('dashboard_boards');
+        } else {
             $boards = auth()->user()->boards;
-            cache(['dashboard_boards' => $boards], 60);
+            Cache::add('dashboard_boards', $boards, now()->addHour());
         }
 
         return Inertia::render('Dashboard', [
@@ -26,24 +29,32 @@ class BoardController extends Controller
     {
         $this->authorize('show', $board);
 
-        $board->load([
-            'tags' => function ($query) {
-                $query->select(['tags.id', 'tags.name', 'tags.color']);
-            },
-            'columns.tasks' => function ($query) {
-                $query->orderBy('position')
-                    ->select(['tasks.id', 'tasks.board_id', 'tasks.column_id', 'tasks.title', 'tasks.description', 'tasks.position']);
-            },
-            'columns.tasks.tags' => function ($query) {
-                $query->select(['tags.id', 'tags.name', 'tags.color']);
-            },
-            'columns.tasks.subtasks' => function ($query) {
-                $query->select(['subtasks.id', 'subtasks.task_id', 'subtasks.name', 'subtasks.done']);
-            },
-        ]);
+        $response = null;
+
+        if (Cache::has("board_{$board->id}")) {
+            $response = Cache::get("board_{$board->id}");
+        } else {
+            $response = $board->load([
+                'tags' => function ($query) {
+                    $query->select(['tags.id', 'tags.board_id', 'tags.name', 'tags.color']);
+                },
+                'columns.tasks' => function ($query) {
+                    $query->orderBy('position')
+                        ->select(['tasks.id', 'tasks.board_id', 'tasks.column_id', 'tasks.title', 'tasks.description', 'tasks.position']);
+                },
+                'columns.tasks.tags' => function ($query) {
+                    $query->select(['tags.id', 'tags.board_id', 'tags.name', 'tags.color']);
+                },
+                'columns.tasks.subtasks' => function ($query) {
+                    $query->select(['subtasks.id', 'subtasks.task_id', 'subtasks.name', 'subtasks.done']);
+                },
+            ]);
+            
+            Cache::add("board_{$board->id}", $response, now()->addHour());
+        }
 
         return Inertia::render('Board/Board', [
-            'board' => $board,
+            'board' => $response,
         ]);
     }
 
@@ -63,6 +74,8 @@ class BoardController extends Controller
         $board->user_id = auth()->id();
 
         $board->save();
+
+        Cache::forget('dashboard_boards');
 
         return back();
     }
@@ -85,6 +98,9 @@ class BoardController extends Controller
         $this->authorize('edit', $board);
 
         $board->update(['pinned' => request('pinned')]);
+
+        Cache::forget('dashboard_boards');
+
         return back();
     }
 
@@ -93,6 +109,9 @@ class BoardController extends Controller
         $this->authorize('delete', $board);
 
         $board->delete();
+
+        Cache::forget('dashboard_boards');
+
         return back();
     }
 }

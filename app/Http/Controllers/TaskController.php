@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Task;
 use App\Models\Board;
 use App\Models\Column;
 use App\Models\Subtask;
-use App\Models\Task;
 use App\Rules\MaxEntries;
+use Illuminate\Support\Facades\Cache;
 
 class TaskController extends Controller
 {
@@ -54,6 +55,8 @@ class TaskController extends Controller
             $task->tags()->attach($tag);
         }
 
+        Cache::forget("board_{$board->id}");
+
         return back();
     }
 
@@ -70,6 +73,8 @@ class TaskController extends Controller
             'title' => request('title'),
             'description' => request('description')
         ]);
+
+        Cache::forget("board_{$task->board_id}");
 
         return back();
     }
@@ -88,6 +93,8 @@ class TaskController extends Controller
         $task->column_id = $column->id;
 
         $task->save();
+
+        Cache::forget("board_{$column->board_id}");
     }
 
     public function delete(Task $task)
@@ -95,6 +102,8 @@ class TaskController extends Controller
         $this->authorize('delete', $task);
 
         $task->delete();
+
+        Cache::forget("board_{$task->board_id}");
 
         return back();
     }
