@@ -19,6 +19,7 @@ import TitleIcon from "@/Icons/TitleIcon";
 import AttachTagsPopover from "../Task/AttachTagsPopover";
 import TagIcon from "@/Icons/TagIcon";
 import SubtasksPopover from "../Task/SubtasksPopover";
+import Tag from "../Tag";
 
 export default function AddTaskForm({
   columnId,
@@ -67,18 +68,17 @@ export default function AddTaskForm({
     }
 
     const newTags = [...tags, tag];
-    console.log(data.tags);
+
     setTags(newTags);
+    
     setData(
       "tags",
       newTags.map((tag) => tag.id)
     );
   };
 
-  const detachTag = (e: MouseEvent<HTMLButtonElement>) => {
-    const index: number = Number(e.currentTarget.value);
-
-    const newTags = [...tags.slice(0, index), ...tags.slice(index + 1)];
+  const detachTag = (selectedTag: TagElement) => {
+    const newTags = tags.filter(tag => tag.id !== selectedTag.id);
 
     setTags(newTags);
 
@@ -98,7 +98,7 @@ export default function AddTaskForm({
       onError: () => {
         if (errors.items) {
           reset();
-          sendNotify("You can only create 40 cards", "fail");
+          sendNotify("You can only create 40 tasks", "fail");
           closeForm();
         }
       },
@@ -119,6 +119,7 @@ export default function AddTaskForm({
       </div>
 
       <TextInput
+        aria-label="task title input"
         id="title"
         name="title"
         type="text"
@@ -135,6 +136,7 @@ export default function AddTaskForm({
         <InputLabel htmlFor="description" value="Description" />
       </div>
       <textarea
+        aria-label="task description input"
         id="description"
         name="description"
         className="w-full bg-transparent rounded-md h-24 border-solid border border-black dark:border-white dark:placeholder:text-gray-300 hover:border-amber-500 hover:dark:border-violet-600 focus:border-amber-500 focus:dark:border-violet-600 focus:ring-0 resize-none"
@@ -151,6 +153,7 @@ export default function AddTaskForm({
         {data.subtasks.map((subtask, index) => (
           <div key={index} className="flex items-center space-x-3 ">
             <button
+              aria-label="remove subtask button"
               type="button"
               value={index}
               className="text-2xl text-rose-600 font-bold"
@@ -178,13 +181,7 @@ export default function AddTaskForm({
         <ul className="flex flex-wrap space-x-2">
           {tags.map((tag, index) => (
             <li key={tag.id}>
-              <button
-                value={index}
-                onClick={detachTag}
-                className={`shrink-0 p-1 rounded-md ${tag.color} capitalize text-sm font-bold border border-black`}
-              >
-                &ndash; {tag.name}
-              </button>
+              <Tag tag={tag} type="detach" handleTag={detachTag} />
             </li>
           ))}
         </ul>

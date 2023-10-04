@@ -62,6 +62,7 @@ export default function AddColumnForm({
           <InputLabel htmlFor="name" value="Name" />
         </div>
         <TextInput
+          aria-label="column name input"
           id="name"
           name="name"
           type="text"

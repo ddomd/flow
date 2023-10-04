@@ -19,12 +19,12 @@ export default function AppendSubtaskForm({
   const [error, setError] = useState("");
 
   const handleSubmit = () => {
-    if(name.trim() === "") {
-      setError("The name field is required.")
+    if (name.trim() === "") {
+      setError("The name field is required.");
       return;
     }
 
-    if(subtasksLength >= 5) {
+    if (subtasksLength >= 5) {
       setError("You can only create 5 subtasks");
       return;
     }
@@ -44,6 +44,7 @@ export default function AppendSubtaskForm({
         <InputLabel htmlFor="subtask" value="Subtask" />
       </div>
       <TextInput
+        aria-label="subtask input"
         id="subtask"
         name="subtask"
         placeholder="Subtask name..."

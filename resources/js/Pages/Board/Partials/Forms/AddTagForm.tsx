@@ -47,6 +47,7 @@ export default function AddTagForm({
       </div>
 
       <TextInput
+        aria-label="tag name input"
         id="tag-name"
         name="tag-name"
         value={data.name}

@@ -58,6 +58,7 @@ export default function AddBoardForm({
         <InputLabel htmlFor="name" value="Name" className="mt-3" />
       </div>
       <TextInput
+        aria-label="board name input"
         id="name"
         name="name"
         type="text"
@@ -75,6 +76,7 @@ export default function AddBoardForm({
         </div>
         <div>
           <input
+            aria-label="board pin checkbox"
             id="pinned"
             name="pinned"
             type="checkbox"

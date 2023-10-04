@@ -1,12 +1,12 @@
+import { FormEvent, FormEventHandler } from "react";
+import { useForm } from "@inertiajs/react";
+import { debounce } from "@/utils/debounce";
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import PrimaryButton from "@/Components/PrimaryButton";
 import SecondaryButton from "@/Components/SecondaryButton";
 import TextInput from "@/Components/TextInput";
 import TextIcon from "@/Icons/TextIcon";
-import { NotifyContext } from "@/context/NotifyContext";
-import { useForm } from "@inertiajs/react";
-import { FormEvent, FormEventHandler, useContext, useState } from "react";
 
 export default function AddSubtaskForm({
   taskId,
@@ -20,17 +20,20 @@ export default function AddSubtaskForm({
     items: 0,
   });
 
-  const submitForm: FormEventHandler<HTMLFormElement> = (
-    e: FormEvent<HTMLFormElement>
-  ) => {
-    e.preventDefault();
-
+  const debouncedSubmit = debounce(() => {
     post(route("subtasks.store", { task: taskId }), {
       onSuccess: () => {
         reset();
         closeForm();
       },
     });
+  }, 200);
+
+  const submitForm: FormEventHandler<HTMLFormElement> = (
+    e: FormEvent<HTMLFormElement>
+  ) => {
+    e.preventDefault();
+    debouncedSubmit();
   };
 
   return (
@@ -44,6 +47,7 @@ export default function AddSubtaskForm({
         <InputLabel htmlFor="subtask" value="Subtask" />
       </div>
       <TextInput
+        aria-label="subtask input"
         id="subtask"
         name="subtask"
         placeholder="Subtask name..."
