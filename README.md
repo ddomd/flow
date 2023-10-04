@@ -23,7 +23,7 @@ To do so we use two constants:
 
 `POSITION_MIN` : Determines the minimum position value that a task can have.
 
-When a new task is created, we automatically calculate and set its position within the column based on existing tasks' positions,
+When a new task is created, we automatically calculate and set its position within the column based on the existing tasks positions,
 to do so we query the database to find the highest position value among existing tasks in the same column and then add the `POSITION_GAP` to this highest position value to determine the newly created task's position.
 
 After saving the task, we then check if its position is less than `POSITION_MIN`.
