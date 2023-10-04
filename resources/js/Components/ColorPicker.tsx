@@ -38,6 +38,7 @@ export default function ColorPicker({
       {palette.map((color) => (
         <div key={color} className="relative">
           <input
+            aria-label={`pick ${color.replace(/(bg-|-500)/g, "")}`}
             id={color}
             name="tag-color"
             type="radio"
