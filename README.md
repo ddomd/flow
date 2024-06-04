@@ -1,8 +1,5 @@
 # Flow
 
-Please do not try to use the demo for actual project management, since it's only up for demonstration purposes it's run on a
-relatively slow server and requests are heavily throttled.
-
 ## Overview
 
 Flow is a simple project management tool that helps organize daily tasks using a Kanban board interface.
